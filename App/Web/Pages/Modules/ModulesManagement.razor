@@ -1,0 +1,43 @@
+﻿@page "/modules"
+@using Shared.Models
+@using Shared.Models.DTOs
+@inherits ModulesManagementPage
+
+<MudText Align="Align.Center" Typo="Typo.h2">Gerenciamento de Módulos</MudText>
+
+<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary">Novo Módulo</MudButton>
+
+<MudSpacer />
+
+<MudDataGrid Items="@Modules" EditMode="@DataGridEditMode.Cell">
+    <Columns>
+        <HierarchyColumn T="ModuleEspDto" />
+        <PropertyColumn Property="x => x.Id" Title="Nr" />
+        <PropertyColumn Property="x => x.Description" Title="Descrição" />
+        <PropertyColumn Property="x => x.Sensors.Count" Title="Sensores" />
+        <TemplateColumn CellClass="d-flex justify-end" Title="Ações">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => EditModule(context.Item)" />
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => DeleteModule(context.Item)" />
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <ChildRowContent>
+        <MudText Typo="Typo.h6">Sensores</MudText>
+        @if (@context.Item.Sensors.Any())
+        {
+            <MudDataGrid FixedHeader="true" Items="@context.Item.Sensors">
+                <Columns>
+                    <PropertyColumn Property="x => x.Id" Title="Nr" />
+                    <PropertyColumn Property="x => x.Description" Title="Descrição" />
+                </Columns>
+            </MudDataGrid>
+        }
+        else
+        {
+            <MudText Align="Align.Center" Typo="Typo.h6">Nenhum sensor cadastrado</MudText>
+        }
+    </ChildRowContent>
+</MudDataGrid>

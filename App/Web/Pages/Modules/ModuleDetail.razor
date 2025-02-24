@@ -1,0 +1,60 @@
+﻿@page "/modules/{id:int}"
+@using Shared.Models
+@using Shared.Models.DTOs
+@using System.Globalization
+@inherits ModuleDetailPage
+
+<style>
+    .selected {
+        background-color: #6d46b4 !important;
+    }
+
+        .selected > td {
+            color: white !important;
+        }
+
+            .selected > td .mud-input {
+                color: white !important;
+            }
+</style>
+
+<MudText Align="Align.Center" Typo="Typo.h2">Detalhes do Módulo</MudText>
+
+<MudText Style="margin=20px" Align="Align.Center" Typo="Typo.h4">Módulo: @Module.Id.ToString() - @Module.Description</MudText>
+
+<MudStack Row Justify="Justify.SpaceBetween">
+    <MudButton @onclick="AddNewSensor" Variant="Variant.Filled" Color="Color.Info">Novo Sensor</MudButton>
+    <MudButton @onclick="EditModule" Variant="Variant.Filled" Color="Color.Primary">Renomear</MudButton>    
+</MudStack>
+
+<MudStack Row Justify="Justify.SpaceBetween">
+    <MudDataGrid Hover="true" T="SensorDto" @ref="mudTable" RowClass="cursor-pointer" RowClassFunc="@SelectedRowClassFunc" Items="@Module.Sensors">
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Nr" />
+            <PropertyColumn Property="x => x.Description" Title="Descrição" />
+            <TemplateColumn CellClass="d-flex justify-end" Title="Ações">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => EditSensor(context.Item)" />
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="()  => DeleteModule(context.Item)" />
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+
+    <MudStack>
+        <MudDatePicker style="width:310px" PickerClosed="OnSelectDate" Culture="@CultureInfo.GetCultureInfo("pt-BR")" Label="Selecione um dia" @bind-Date="InputModel" />
+        @if (SensorDatas.Any())
+        {
+
+            <MudTimeSeriesChart ChartSeries="@_series" ChartOptions="@_options" Width="100%" Height="400px" TimeLabelSpacing="TimeSpan.FromMinutes(90)" />
+
+        }
+        else
+        {
+            <MudText Align="Align.Center">No data available for the selected date.</MudText>
+        }
+    </MudStack>
+
+</MudStack>

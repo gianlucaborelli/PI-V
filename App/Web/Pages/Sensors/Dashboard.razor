@@ -1,0 +1,54 @@
+﻿@page "/sensors"
+@using System.Globalization
+@using Shared.Models.DTOs
+@inherits DashboardPage
+
+<MudText Align="Align.Center" Typo="Typo.h2">Dashboard</MudText>
+
+<MudSelect T="ModuleEspDto"
+           Placeholder="Selecione um módulo"
+           ValueChanged="OnModuleSelected">
+    @foreach (var module in ModulesList)
+    {
+        <MudSelectItem Value="module">@module.Description</MudSelectItem>
+    }
+
+</MudSelect>
+
+@if (averageHumidity != 0)
+{
+    <div style="display:flex; margin:20px">
+
+        <MudStack>
+
+            <MudDatePicker style="width:310px" PickerClosed="OnSelectDate" Culture="@CultureInfo.GetCultureInfo("pt-BR")" Label="Selecione um dia" @bind-Date="InputModel" />
+            <MudText Align="Align.Center" Typo="Typo.h6">Temperatura média: @averageTemperature.ToString("F2")</MudText>
+            <MudText Align="Align.Center" Typo="Typo.h6">Humidade média: @averageHumidity.ToString("F2")</MudText>
+
+
+        </MudStack>
+
+        @if (Datas.Any())
+        {
+            <MudTimeSeriesChart ChartSeries="@_series" ChartOptions="@_options" Width="100%" Height="400px" TimeLabelSpacing="TimeSpan.FromMinutes(90)" />
+        }
+        else
+        {
+            <MudText>No data available for the selected date.</MudText>
+        }
+
+    </div>
+
+    <MudDataGrid FixedHeader="true" Items="@Datas">
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Nr" />
+            <PropertyColumn Property="x => x.Humidity" Title="Humidade" />
+            <PropertyColumn Property="x => x.Temperature" Title="Temperatura" />
+            <PropertyColumn Property="x => x.CreatedAt" Title="Data" />
+        </Columns>
+    </MudDataGrid>
+}
+else
+{
+    <MudText Align="Align.Center" Typo="Typo.h6">Selecione um módulo</MudText>
+}
