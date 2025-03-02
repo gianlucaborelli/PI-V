@@ -94,29 +94,32 @@ namespace Service.Api.Controllers
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var user = await _userManager.FindByEmailAsync(requestDto.Email);
-            var role = await _userManager.GetRolesAsync(user!) ?? throw new AuthenticationException();
 
-            var result = await _signInManager.PasswordSignInAsync(user!.UserName!, requestDto.Password, false, true);
-
-            if (result.Succeeded)
+            if (user is not null)
             {
-                var accessToken = _jwtManager.GenerateAccessToken(user, role);
-                var refreshToken = await _jwtManager.GenerateRefreshToken(user.Id);
+                var result = await _signInManager.PasswordSignInAsync(user!.UserName!, requestDto.Password, false, true);
 
-                return CustomResponse(new { AccessToken = accessToken, RefreshToken = refreshToken });
-            }
+                if (result.Succeeded)
+                {
+                    var role = await _userManager.GetRolesAsync(user!) ?? throw new AuthenticationException();
+                    var accessToken = _jwtManager.GenerateAccessToken(user, role);
+                    var refreshToken = await _jwtManager.GenerateRefreshToken(user.Id);
 
-            if (result.IsLockedOut)
-            {
-                AddError("This user is temporarily blocked");
-                return CustomResponse();
-            }
+                    return CustomResponse(new { AccessToken = accessToken, RefreshToken = refreshToken });
+                }
 
-            if (result.IsNotAllowed)
-            {
-                AddError("You need to confirm your email!");
-                return CustomResponse();
-            }
+                if (result.IsLockedOut)
+                {
+                    AddError("This user is temporarily blocked");
+                    return CustomResponse();
+                }
+
+                if (result.IsNotAllowed)
+                {
+                    AddError("You need to confirm your email!");
+                    return CustomResponse();
+                }
+            }            
 
             AddError("Incorrect user or password");
             return CustomResponse();
