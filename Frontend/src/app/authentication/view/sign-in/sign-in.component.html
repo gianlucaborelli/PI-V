@@ -1,0 +1,170 @@
+<ng-container *ngIf="showLogin">
+  <mat-card>
+    <mat-card-content>
+      <h1>Login</h1>
+
+      <div class="align-vertical-itens content">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>mail</mat-icon>
+          <input matInput type="email" #userName required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <mat-icon matPrefix>key</mat-icon>
+          <input
+            matInput
+            type="password"
+            #userPassword
+            required
+            (keyup.enter)="Login(userName.value, userPassword.value)"
+          />
+        </mat-form-field>
+
+        <p class="forgot-password-text" (click)="toggleForm('forgotPassword')">
+          Esqueceu a senha? Enviar Email
+        </p>
+
+        <button
+          style="margin-top: 20px"
+          (click)="Login(userName.value, userPassword.value)"
+          mat-raised-button
+          color="accent"
+        >
+          Login
+        </button>
+
+        <p class="align-horizontal-itens">Não tem uma conta?</p>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="toggleForm('register')"
+        >
+          Registre-se
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="showForgotPassword">
+  <mat-card>
+    <mat-card-content>
+      <button
+        mat-icon-button
+        aria-label="Retorna a tela de login."
+        (click)="toggleForm('login')"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Redefinir Senha</h1>
+
+      <div class="align-vertical-itens content">
+        <div class="image">
+          <img src="assets/img/lock_reset.svg" width="200" height="200" />
+        </div>
+
+        <p>
+          Por favor digite seu email para enviarmos o pedido de recuperação de
+          senha.
+        </p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>mail</mat-icon>
+          <input
+            matInput
+            type="email"
+            placeholder="Email"
+            #passwordResetEmail
+            required
+          />
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" value="Reset Password">
+          Enviar Email
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="showRegister">
+  <mat-card>
+    <mat-card-content>
+      <button
+        mat-icon-button
+        aria-label="Retorna a tela de login."
+        (click)="toggleForm('login')"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Registre-se</h1>
+
+      <div class="align-vertical-itens content">
+        <div class="image">
+          <img src="assets/img/add_reaction.svg" width="200" height="200" />
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput type="text" placeholder="Nome" #userName required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>mail</mat-icon>
+          <input
+            matInput
+            type="email"
+            placeholder="Email"
+            #userEmail
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <mat-icon matPrefix>key</mat-icon>
+          <input
+            matInput
+            type="password"
+            placeholder="Senha"
+            #userPwd
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirme a Senha</mat-label>
+          <mat-icon matPrefix>key</mat-icon>
+          <input
+            matInput
+            type="password"
+            placeholder="Confirme a Senha"
+            #userConfirmPwd
+            required
+          />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="
+            Register(
+              userName.value,
+              userPwd.value,
+              userEmail.value,
+              userConfirmPwd.value
+            )
+          "
+        >
+          Register
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
