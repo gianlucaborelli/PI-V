@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using Service.Api.Service.Authentication.Configurations;
 using Service.Api.Service.SystemManager.Config;
 
@@ -22,7 +23,31 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Informe o token JWT no formato 'Bearer {token}'",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    }
+                                },
+                                new string[] { }
+                            }
+                        });
+});
 
 var app = builder.Build();
 
