@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Service.Api.Service.Authentication.Models;
 
 namespace Service.Api.Database
@@ -11,13 +10,10 @@ namespace Service.Api.Database
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
-
-
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
             ChangeTracker.LazyLoadingEnabled = false;
         }
-
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }

@@ -7,7 +7,7 @@ namespace Service.Api.Service.Authentication.Configurations
 
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
         {
-            
+            services.AddScoped<ILoggedInUser, LoggedInUser>();
 
             return services;
         }

@@ -17,7 +17,7 @@ namespace Service.Api.Service.Authentication.Configurations
             services.AddDbContext<IdentityContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IJwtAuthManager, JwtAuthManager>();
+            services.AddTransient<IJwtAuthManager, JwtAuthManager>();            
 
             services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
             {
