@@ -43,5 +43,49 @@ namespace Service.Api.Controllers
             var response = _systemService.UpdateCompany(request);
             return Ok(response);
         }
+
+        [HttpDelete("company/{id}")]
+        public IActionResult DeleteCompany(Guid id)
+        {
+            _systemService.DeleteCompany(id);
+            return Ok();
+        }
+
+        [HttpGet("company/{companyId}/module")]
+        public IActionResult GetAllModules(Guid companyId)
+        {
+            var response = _systemService.GetAllModules(companyId);
+            return Ok(response);
+        }
+
+        [HttpGet("company/{companyId}/module/{moduleId}")]
+        public IActionResult GetModuleById(Guid companyId, Guid moduleId)
+        {
+            var response = _systemService.GetModuleById(companyId, moduleId);
+            return Ok(response);
+        }
+
+        [HttpPost("company/{companyId}/module")]
+        public IActionResult RegisterModule([FromRoute]Guid companyId, [FromBody] NewModuleRequest request)
+        {
+            request.CompanyId = companyId;
+            var response = _systemService.RegisterNewModule(request);
+            return Ok(response);
+        }
+
+        [HttpPut("company/{companyId}/module")]
+        public IActionResult UpdateModule([FromRoute] Guid companyId, [FromBody] UpdateModuleRequest request)
+        {
+            request.CompanyId = companyId;
+            var response = _systemService.UpdateModule(request);
+            return Ok(response);
+        }
+
+        [HttpDelete("company/{companyId}/module/{moduleId}")]
+        public IActionResult DeleteModule(Guid companyId, Guid moduleId)
+        {
+            _systemService.DeleteModule(companyId, moduleId);
+            return Ok();
+        }
     }
 }
