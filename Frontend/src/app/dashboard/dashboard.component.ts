@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { SensoresService } from '../services/sensores.service';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, NgClass],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
