@@ -18,10 +18,15 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             return new SensorDto
             {
                 Id = sensor.Id,
+                Name = sensor.Name,
                 Description = sensor.Description,
                 ModuleId = sensor.ModuleId,
                 Type = sensor.SensorType.Name
             };
+        }
+        public static List<SensorDto> ToSensorDto(this List<Sensor> sensors)
+        {
+            return sensors.Select(s => s.ToSensorDto()).ToList();
         }
     }
 }

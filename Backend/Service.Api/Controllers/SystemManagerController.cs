@@ -66,7 +66,7 @@ namespace Service.Api.Controllers
         }
 
         [HttpPost("company/{companyId}/module")]
-        public IActionResult RegisterModule([FromRoute]Guid companyId, [FromBody] NewModuleRequest request)
+        public IActionResult RegisterModule([FromRoute] Guid companyId, [FromBody] NewModuleRequest request)
         {
             request.CompanyId = companyId;
             var response = _systemService.RegisterNewModule(request);
@@ -85,6 +85,44 @@ namespace Service.Api.Controllers
         public IActionResult DeleteModule(Guid companyId, Guid moduleId)
         {
             _systemService.DeleteModule(companyId, moduleId);
+            return Ok();
+        }
+
+        [HttpGet("company/{companyId}/module/{moduleId}/sensor")]
+        public IActionResult GetAllSensors(Guid companyId, Guid moduleId)
+        {
+            var response = _systemService.GetAllSensors(companyId, moduleId);
+            return Ok(response);
+        }
+
+        [HttpGet("company/{companyId}/module/{moduleId}/sensor/{sensorId}")]
+        public IActionResult GetSensorById(Guid companyId, Guid moduleId, Guid sensorId)
+        {
+            var response = _systemService.GetSensorById(companyId, moduleId, sensorId);
+            return Ok(response);
+        }
+
+        [HttpPost("company/{companyId}/module/{moduleId}/sensor")]
+        public IActionResult RegisterSensor([FromRoute] Guid companyId, [FromRoute] Guid moduleId, [FromBody] NewSensorRequest request)
+        {
+            request.CompanyId = companyId;
+            request.ModuleId = moduleId;
+            var response = _systemService.RegisterNewSensor(request);
+            return Ok(response);
+        }
+
+        [HttpPut("company/{companyId}/module/{moduleId}/sensor")]
+        public IActionResult UpdateSensor([FromRoute] Guid companyId, [FromRoute] Guid moduleId, [FromBody] SensorDto request)
+        {            
+            request.ModuleId = moduleId;
+            var response = _systemService.UpdateSensor(request);
+            return Ok(response);
+        }
+
+        [HttpDelete("company/{companyId}/module/{moduleId}/sensor/{sensorId}")]
+        public IActionResult DeleteSensor(Guid companyId, Guid moduleId, Guid sensorId)
+        {
+            _systemService.DeleteSensor(sensorId);
             return Ok();
         }
     }

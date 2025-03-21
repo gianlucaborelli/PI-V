@@ -12,10 +12,16 @@ public interface ISystemService
     void DeleteCompany(Guid id);
 
     // Modules
-
     List<ModuleDto> GetAllModules(Guid companyId);
     ModuleDto GetModuleById(Guid companyId, Guid id);
     ModuleDto RegisterNewModule(NewModuleRequest request);
     ModuleDto UpdateModule(UpdateModuleRequest request);
     void DeleteModule(Guid companyId, Guid id);
+
+    // Sensors
+    List<SensorDto> GetAllSensors(Guid companyId, Guid moduleId);
+    SensorDto GetSensorById(Guid companyId, Guid moduleId, Guid SensorId);
+    SensorDto RegisterNewSensor(NewSensorRequest request);
+    SensorDto UpdateSensor(SensorDto request);
+    void DeleteSensor(Guid sensorId);
 }
