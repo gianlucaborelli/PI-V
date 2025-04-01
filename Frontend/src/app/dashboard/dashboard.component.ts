@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgClass } from '@angular/common';
-import { SensoresService } from '../services/sensores.service';
-
+import { CommonModule, NgClass } from '@angular/common';
+import { SensoresService } from 'src/app/services/sensores.service'; // Ajustar aqui se for o caso
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,8 +14,9 @@ export class DashboardComponent implements OnInit {
   constructor(private sensoresService: SensoresService) {}
 
   ngOnInit(): void {
-    this.sensoresService.getSensores().subscribe(data => {
-      this.sensores = data;
+    this.sensoresService.getSensores().subscribe({
+      next: (data) => this.sensores = data,
+      error: (err) => console.error('Erro ao carregar sensores:', err)
     });
   }
 

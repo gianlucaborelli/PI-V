@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SensoresService } from 'src/app/services/sensores.service';
 
 @Component({
   selector: 'app-historico',
   standalone: true,
-  imports: [],
   templateUrl: './historico.component.html',
-  styleUrl: './historico.component.css'
+  styleUrls: ['./historico.component.css']
 })
-export class HistoricoComponent {
+export class HistoricoComponent implements OnInit {
+  sensores: any[] = [];
 
+  constructor(private sensoresService: SensoresService) {}
+
+  ngOnInit(): void {
+    this.sensoresService.getSensores().subscribe({
+      next: (data) => this.sensores = data,
+      error: (err) => console.error('Erro ao carregar sensores:', err)
+    });
+  }
 }

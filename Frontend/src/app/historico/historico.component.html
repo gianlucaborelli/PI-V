@@ -1,1 +1,6 @@
-<p>historico works!</p>
+<h2>Histórico de Sensores</h2>
+<ul>
+  <li *ngFor="let sensor of sensores">
+    {{ sensor.id }} - {{ sensor.name }}
+  </li>
+</ul>
