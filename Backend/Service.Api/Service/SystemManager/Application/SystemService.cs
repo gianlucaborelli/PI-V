@@ -13,7 +13,7 @@ public class SystemService : ISystemService
     private readonly ServiceDatabaseContext _context;
     private readonly ILoggedInUser _loggedInUser;
 
-    public SystemService(ServiceDatabaseContext context, IJwtAuthManager jwtAuthManager, ILoggedInUser loggedInUser )
+    public SystemService(ServiceDatabaseContext context, ILoggedInUser loggedInUser )
     {
         _context = context;        
         _loggedInUser = loggedInUser;

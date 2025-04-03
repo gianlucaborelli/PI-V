@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Service.Api.Database;
+using Service.Api.Service.DeviceManager;
 using Service.Api.Service.SystemManager.Application;
 
 namespace Service.Api.Service.SystemManager.Config
@@ -13,6 +13,7 @@ namespace Service.Api.Service.SystemManager.Config
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ISystemService, SystemService>();
+            services.AddScoped<ISensorDataService, SensorDataService>();
         }
     }
 }
