@@ -14,6 +14,7 @@ namespace Service.Api.Service.SystemManager.Config
 
             services.AddScoped<ISystemService, SystemService>();
             services.AddScoped<ISensorDataService, SensorDataService>();
+            services.AddScoped<IDashboardService, DashboardService>();
         }
     }
 }
