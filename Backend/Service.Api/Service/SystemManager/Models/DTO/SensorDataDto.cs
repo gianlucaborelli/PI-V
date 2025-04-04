@@ -2,7 +2,7 @@
 {
     public class SensorDataDto
     {        
-        public string SensorType { get; set; }
+        public string Name { get; set; }
         public List<SensorSeries> Series { get; set; }
     }
 
@@ -19,7 +19,7 @@
         {
             return new SensorDataDto
             {
-                SensorType = sensor.SensorType.Name,
+                Name = sensor.SensorType.Name,
                 Series = sensor.SensorDatas.Select(s => new SensorSeries
                 {
                     Value = s.Value,
