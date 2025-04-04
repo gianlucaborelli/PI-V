@@ -12,7 +12,7 @@ namespace Service.Api.Controllers
             dashboardService = service;
         }
 
-        [HttpPost("dashboard")]
+        [HttpGet("dashboard")]
         public async Task<IActionResult> AddSensorData([FromQuery] Guid moduleId, [FromQuery] DateTime? dateTime)
         {
             var response = await dashboardService.GetDashboardDataAsync(moduleId, dateTime);
