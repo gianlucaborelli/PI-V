@@ -1,0 +1,114 @@
+<h2 class="titulo">Painel de Monitoramento Ambiental</h2>
+
+<div style="display: flex; justify-content: space-around">
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha uma Empresa</mat-label>
+    <mat-select
+      [(value)]="companySelected"
+      (selectionChange)="onCompanySelected($event)"
+    >
+      <mat-option *ngFor="let item of companies" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha um Módulo</mat-label>
+    <mat-select
+      [(value)]="modulesSelected"
+      (selectionChange)="onModuleSelected($event)"
+    >
+      <mat-option *ngFor="let item of modules" [value]="item.id">
+        {{ item.tag }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha uma data</mat-label>
+    <input
+      matInput
+      [matDatepicker]="datepicker"
+      (dateChange)="addEvent($event)"
+    />
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="datepicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #datepicker> </mat-datepicker>
+  </mat-form-field>
+</div>
+
+<div style="height: 60px"></div>
+<div style="display: flex; justify-content: space-around">
+  <ngx-charts-line-chart
+    style="margin-top: 6rem"
+    [legend]="legend"
+    [view]="view"
+    [scheme]="colorScheme"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisTickFormatting]="formatXAxisLabel"
+    [yAxisTicks]="[0, 20, 40, 60, 80, 100]"
+    [xAxis]="xAxis"
+    [yAxis]="yAxis"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [timeline]="timeline"
+    [results]="dashboardData.series"
+  >
+  </ngx-charts-line-chart>
+</div>
+
+<div style="display: flex; justify-content: space-around">
+  <div>
+    <mat-card appearance="outlined" style="text-align: center">
+      <mat-card-header>
+        <mat-card-title> IBUTG</mat-card-title>
+      </mat-card-header>
+      <mat-card-content
+        >{{
+          dashboardData.ibtgEstimation | number : "1.2-2"
+        }}
+        °C</mat-card-content
+      >
+    </mat-card>
+  </div>
+
+  <mat-card appearance="outlined" style="text-align: center">
+    <mat-card-header>
+      <mat-card-title> Temperatura Média</mat-card-title>
+    </mat-card-header>
+    <mat-card-content
+      >{{
+        dashboardData.temperatureAverage | number : "1.2-2"
+      }}
+      °C</mat-card-content
+    >
+  </mat-card>
+
+  <mat-card appearance="outlined" style="text-align: center">
+    <mat-card-header>
+      <mat-card-title> Temperatura Máxima</mat-card-title>
+    </mat-card-header>
+    <mat-card-content
+      >{{
+        dashboardData.maxTemperature | number : "1.2-2"
+      }}
+      °C</mat-card-content
+    >
+  </mat-card>
+
+  <mat-card appearance="outlined" style="text-align: center">
+    <mat-card-header>
+      <mat-card-title> Umidade Relativa Média</mat-card-title>
+    </mat-card-header>
+    <mat-card-content
+      >{{
+        dashboardData.humidityAverage | number : "1.2-2"
+      }}
+      %</mat-card-content
+    >
+  </mat-card>
+</div>

@@ -1,0 +1,48 @@
+<mat-toolbar class="mat-elevation-z3">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+
+  <div class="header">
+    <!-- <img class="logo" src="assets/img/logo.png" /> -->
+    <h1>THERMOAIRS - Sistema de controle de termo segurança</h1>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z3">
+    <img
+      class="avatar mat-elevation-z3"
+      src=""
+      onerror="this.src='assets/img/user_avatar.png'"
+    />
+
+    <h4 class="name">{{ user.getFullName() }}</h4>
+    <p class="email">{{ user.getEmail() }}</p>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button" (click)="authService.logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button" routerLink="dashboard">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
+    </button>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z3">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

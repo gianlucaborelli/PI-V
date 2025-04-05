@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { SnackBarService } from '../../../components/snack-bar/service/snack-bar.service';
@@ -50,7 +49,7 @@ export class SignInComponent {
       next: (resp) => {
         this.authService.registryOnLocalStorage(resp);
 
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['home']);
       },
       error: (err) => {
         console.error(err);
