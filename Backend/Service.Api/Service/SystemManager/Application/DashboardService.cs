@@ -66,9 +66,21 @@ namespace Service.Api.Service.SystemManager.Application
             var dashboardResponse = new DashboardResponse();
 
             dashboardResponse.IbtgEstimation = ibtgEstimation;
-            dashboardResponse.Series.Add(humiditySensor.ToDashboardDto());
-            dashboardResponse.Series.Add(dryBulbTemperatureSensor.ToDashboardDto());
-            dashboardResponse.Series.Add(darkBulbTemperatureSensor.ToDashboardDto());
+            dashboardResponse.HumidityAverage = humidityAverage;
+            dashboardResponse.TemperatureAverage = dryBulbAverage;
+            dashboardResponse.MaxTemperature = maxTemperature.Value;
+
+            dashboardResponse.Series.Add(
+                Calcules.NormalizeSensorData("Humidity", humiditySensor.SensorDatas, TimeSpan.FromMinutes(10))
+            );
+
+            dashboardResponse.Series.Add(
+                Calcules.NormalizeSensorData("DryBulbTemperature", dryBulbTemperatureSensor.SensorDatas, TimeSpan.FromMinutes(10))
+            );
+
+            dashboardResponse.Series.Add(
+                Calcules.NormalizeSensorData("DarkBulbTemperature", darkBulbTemperatureSensor.SensorDatas, TimeSpan.FromMinutes(10))
+            );
 
             return dashboardResponse;
         }

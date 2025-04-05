@@ -9,7 +9,7 @@
     public class SensorSeries
     {
         public double Value { get; set; }
-        public DateTime Name { get; set; }
+        public string Name { get; set; }
     }
 
     //Mapping
@@ -19,12 +19,12 @@
         {
             return new SensorDataDto
             {
-                Name = sensor.SensorType.Name,
-                Series = sensor.SensorDatas.Select(s => new SensorSeries
-                {
-                    Value = s.Value,
-                    Name = s.CreatedAt
-                }).ToList()
+                //Name = sensor.SensorType.Name,
+                //Series = sensor.SensorDatas.Select(s => new SensorSeries
+                //{
+                //    Value = s.Value,
+                //    Name = s.CreatedAt
+                //}).ToList()
             };
         }
     }
