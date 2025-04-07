@@ -34,9 +34,14 @@
 
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" routerLink="dashboard">
+    <button mat-button class="menu-button" [routerLink]="['/home/dashboard']">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span>
+    </button>
+
+    <button mat-button class="menu-button" [routerLink]="['/home/companies']">
+      <mat-icon>business</mat-icon>
+      <span>Empresas</span>
     </button>
   </mat-sidenav>
 

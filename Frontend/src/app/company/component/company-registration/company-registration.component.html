@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Adicionar nova Empresa</h2>
+<mat-dialog-content>
+  <p>
+    Para Adicionar uma nova empresa, defina um nome e uma lista de setores que
+    será usado para identificar os módulos
+  </p>
+  <mat-form-field appearance="outline">
+    <mat-label>Nome da empresa</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+  <p>Para cada setor, utilize virgula ou enter para separá-los.</p>
+  <mat-form-field appearance="outline" class="tag-list">
+    <mat-label>Lista de setores</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Selecionar setores">
+      @for (tag of tags(); track $index) {
+      <mat-chip-row (removed)="removeTag(tag)">
+        {{ tag }}
+        <button matChipRemove [attr.aria-label]="'remove ' + tag">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      name="currentTag"
+      placeholder="Novo setor"
+      #fruitInput
+      [(ngModel)]="currentTag"
+      [matChipInputFor]="chipGrid"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="addTag($event)"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="registerCompany()">Registrar</button>
+</mat-dialog-actions>

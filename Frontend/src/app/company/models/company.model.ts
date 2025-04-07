@@ -1,5 +1,5 @@
 export interface CompanyModel {
-  id: string;
+  id?: string;
   name: string;
   tags: string[];
 }

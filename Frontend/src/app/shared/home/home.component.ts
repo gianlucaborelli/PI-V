@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -33,6 +34,7 @@ import { NgIf } from '@angular/common';
     MatSidenavModule,
     MatDividerModule,
     RouterOutlet,
+    RouterModule,
     NgIf
   ],
   templateUrl: './home.component.html',

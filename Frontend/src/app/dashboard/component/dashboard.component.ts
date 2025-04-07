@@ -86,11 +86,6 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getDashboardData(selectedId).subscribe({
       next: (data: DashboardModel) => {
-        // data?.series?.forEach(series => {
-        //   series?.series?.forEach(point => {
-        //     point.name = point.name.replace('Z', '');
-        //   });
-        // });
         this.dashboardData = data;
       },
       error: (err: any) => console.error('Erro ao carregar Dados do dashboard:', err)
@@ -102,11 +97,6 @@ export class DashboardComponent implements OnInit {
       this.dateSelected = event.value;
       this.dashboardService.getDashboardData(this.modulesSelected, event.value).subscribe({
         next: (data: DashboardModel) => {
-          // data?.series?.forEach(series => {
-          //   series?.series?.forEach(point => {
-          //     point.name = point.name.replace('Z', '');
-          //   });
-          // });
           this.dashboardData = data;
         },
         error: (err: any) => console.error('Erro ao carregar sensores:', err)

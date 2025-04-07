@@ -15,4 +15,9 @@ export class CompanyService {
     let result = this.http.get<CompanyModel[]>(this.API_URL);
     return result
   }
+
+  registerNewCompany(company: CompanyModel): Observable<CompanyModel> {
+    let result = this.http.post<CompanyModel>(this.API_URL, company);
+    return result
+  }
 }
