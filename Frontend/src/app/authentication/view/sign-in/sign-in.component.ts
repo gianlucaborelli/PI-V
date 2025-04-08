@@ -1,25 +1,15 @@
 import { Component } from '@angular/core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { SnackBarService } from '../../../components/snack-bar/service/snack-bar.service';
 import { NgIf } from '@angular/common';
+import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
 
 @Component({
   selector: 'app-sign-in',
   imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
+    ...MATERIAL_MODULES,
     NgIf
   ],
   templateUrl: './sign-in.component.html',

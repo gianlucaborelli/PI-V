@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DashboardService } from '../service/dashboard.service';
 import { DashboardModel } from '../models/dashboard.model';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { CompanyService } from '../../company/services/company.service';
 import { CompanyModel } from '../../company/models/company.model';
 import { ModuleModel } from '../../modules/models/module.model';
 import { ModuleService } from '../../modules/services/module.service';
-import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatCardModule, MatSelectModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldModule],
+  imports: [
+    ...MATERIAL_MODULES,
+    CommonModule,
+    NgxChartsModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

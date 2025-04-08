@@ -1,38 +1,21 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from '../../authentication/service/auth.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserStoreService } from '../../authentication/service/user-store.service';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgIf } from '@angular/common';
-
+import { MATERIAL_MODULES } from '../imports/material.imports';
 
 @UntilDestroy()
 @Component({
   selector: 'app-home',
   imports: [
-    MatToolbarModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatDividerModule,
+    ...MATERIAL_MODULES,
     RouterOutlet,
     RouterModule,
     NgIf

@@ -1,23 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CompanyService } from '../../services/company.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatInputModule } from '@angular/material/input';
 import { CompanyModel } from '../../models/company.model';
 import { ModuleService } from '../../../modules/services/module.service';
 import { ModuleModel } from '../../../modules/models/module.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
+import { ModuleDetailComponent } from '../../../modules/module-detail/module-detail.component';
+import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
 
 
 @Component({
   selector: 'app-company-view',
-  imports: [MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTableModule, MatChipsModule, MatButtonModule],
+  imports: [
+    ...MATERIAL_MODULES,],
   templateUrl: './company-view.component.html',
   styleUrl: './company-view.component.css'
 })
@@ -72,5 +68,15 @@ export class CompanyViewComponent implements OnInit {
     });
   }
 
-  openDialog() { }
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(ModuleDetailComponent, dialogConfig);
+    dialogRef.componentInstance.companyId = this.company.id;
+    dialogRef.componentInstance.tags = this.company.tags;
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        //this.updateDataSource();
+      }
+    });
+  }
 }

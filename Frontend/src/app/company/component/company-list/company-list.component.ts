@@ -1,22 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
 import { CompanyService } from '../../services/company.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
 import { CompanyModel } from '../../models/company.model';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
 import { Router } from '@angular/router';
+import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
+
 
 @Component({
   selector: 'app-company-list',
   imports: [
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatChipsModule,
-    MatDialogModule
+    ...MATERIAL_MODULES,
   ],
   templateUrl: './company-list.component.html',
   styleUrl: './company-list.component.css'

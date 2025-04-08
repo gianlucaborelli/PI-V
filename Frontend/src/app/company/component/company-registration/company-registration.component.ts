@@ -1,40 +1,21 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, inject, Input, model, OnInit, signal } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import {
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { CompanyModel } from '../../models/company.model';
 import { CompanyService } from '../../services/company.service';
+import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
 
 @Component({
   selector: 'app-company-registration',
   standalone: true,
   imports: [
-    MatButtonModule,
-    MatIconModule,
+    ...MATERIAL_MODULES,
     FormsModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatDialogContent,
-    MatDialogTitle,
-    MatDialogActions,
     CommonModule,
-    ReactiveFormsModule,
-    MatDialogClose,
-    MatFormFieldModule,
-    MatInputModule],
+    ReactiveFormsModule,],
   templateUrl: './company-registration.component.html',
   styleUrls: ['./company-registration.component.css']
 })
@@ -50,7 +31,6 @@ export class CompanyRegistrationComponent implements OnInit {
   constructor(private service: CompanyService) { }
 
   ngOnInit(): void {
-
     if (this.companyToEdit) {
       this.name = this.companyToEdit.name;
       this.tags.set(this.companyToEdit.tags);
