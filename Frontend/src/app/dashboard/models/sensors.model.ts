@@ -1,5 +1,8 @@
 export interface SensorsModel {
-  sensorType?: string;
+  id?: string;
+  name?: string;
+  type?: string;
+  description?: string;
   series?: SensorDataModel[] | null;
 }
 

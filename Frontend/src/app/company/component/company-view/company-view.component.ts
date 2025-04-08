@@ -70,12 +70,14 @@ export class CompanyViewComponent implements OnInit {
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '80vw';
+    dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(ModuleDetailComponent, dialogConfig);
     dialogRef.componentInstance.companyId = this.company.id;
     dialogRef.componentInstance.tags = this.company.tags;
     dialogRef.afterClosed().subscribe((response) => {
       if (response) {
-        //this.updateDataSource();
+        this.updateDataSource();
       }
     });
   }
