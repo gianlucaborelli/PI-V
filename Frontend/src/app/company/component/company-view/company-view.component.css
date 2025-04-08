@@ -1,0 +1,41 @@
+.example-action-buttons {
+  padding-bottom: 20px;
+}
+
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+.titulo {
+  font-size: 1.3rem;
+  margin-bottom: -15px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.col-id {
+  width: 350px;
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-sensors {
+  display: flex;
+  justify-content: center;
+}
+
+span {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  color: #000000;
+  margin-left: 5px;
+}

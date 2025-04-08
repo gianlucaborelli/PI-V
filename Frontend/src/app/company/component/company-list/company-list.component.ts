@@ -31,22 +31,8 @@ export class CompanyListComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAllCompanies().subscribe((data: CompanyModel[]) => {
-      console.log(data);
       this.companies = data;
     });
-  }
-
-  getColorForTag(tag: string): string {
-    const hash = this.hashString(tag);
-    return `hsl(${hash % 360}, 70%, 50%)`;
-  }
-
-  private hashString(str: string): number {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
   }
 
   editCompany(company: CompanyModel) {
