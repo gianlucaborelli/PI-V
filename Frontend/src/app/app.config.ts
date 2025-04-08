@@ -5,12 +5,13 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { tokenInterceptorFn } from './authentication/guard/token.interceptor';
+import { loadingInterceptorFn } from './shared/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([tokenInterceptorFn])
+      withInterceptors([tokenInterceptorFn, loadingInterceptorFn])
     ),
     provideAnimations()
   ]
