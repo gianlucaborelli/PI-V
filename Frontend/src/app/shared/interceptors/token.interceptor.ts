@@ -8,14 +8,10 @@ import {
 import { inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-
-
-import { Router } from '@angular/router';
-
-import { AuthService } from '../service/auth.service';
-import { SnackBarService } from '../../components/snack-bar/service/snack-bar.service';
-import { RefreshTokenModel } from '../models/refresh-token.model';
-import { TokenApiModel } from '../models/token-api.model';
+import { AuthService } from '../../authentication/service/auth.service';
+import { RefreshTokenModel } from '../../authentication/models/refresh-token.model';
+import { TokenApiModel } from '../../authentication/models/token-api.model';
+import { SnackBarService } from '../services/snack-bar.service';
 
 let refreshingToken = false;
 
@@ -24,7 +20,6 @@ export const tokenInterceptorFn: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
   const auth = inject(AuthService);
-  const router = inject(Router);
   const snackbarService = inject(SnackBarService);
 
   const myToken = auth.getToken();

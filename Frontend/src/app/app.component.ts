@@ -10,5 +10,5 @@ import { SpinnerComponent } from './shared/components/spinner/spinner.component'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend-angular';
+  title = 'THERMOAIRS';
 }

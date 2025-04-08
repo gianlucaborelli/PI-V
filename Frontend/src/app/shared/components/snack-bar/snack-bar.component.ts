@@ -1,10 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MATERIAL_MODULES } from '../../imports/material.imports';
 
 @Component({
   selector: 'app-snack-bar',
-  imports: [MatProgressBarModule],
+  imports: [
+    ...MATERIAL_MODULES,
+    MatProgressBarModule],
   templateUrl: './snack-bar.component.html',
   styleUrl: './snack-bar.component.css'
 })

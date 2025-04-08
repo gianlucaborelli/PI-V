@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { tokenInterceptorFn } from './authentication/guard/token.interceptor';
+import { tokenInterceptorFn } from './shared/interceptors/token.interceptor';
 import { loadingInterceptorFn } from './shared/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {

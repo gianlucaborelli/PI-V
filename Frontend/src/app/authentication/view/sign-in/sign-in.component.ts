@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { SnackBarService } from '../../../components/snack-bar/service/snack-bar.service';
+
 import { NgIf } from '@angular/common';
 import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-sign-in',
