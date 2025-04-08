@@ -88,7 +88,13 @@ export class DashboardComponent implements OnInit {
       next: (data: DashboardModel) => {
         this.dashboardData = data;
       },
-      error: (err: any) => console.error('Erro ao carregar Dados do dashboard:', err)
+      error: (err: any) => {
+        console.error('Erro ao carregar sensores:', err);
+        this.dashboardData = {
+          ibtgEstimation: 0,
+          series: []
+        };
+      }
     });
   }
 
@@ -99,7 +105,13 @@ export class DashboardComponent implements OnInit {
         next: (data: DashboardModel) => {
           this.dashboardData = data;
         },
-        error: (err: any) => console.error('Erro ao carregar sensores:', err)
+        error: (err: any) => {
+          console.error('Erro ao carregar sensores:', err);
+          this.dashboardData = {
+            ibtgEstimation: 0,
+            series: []
+          };
+        }
       });
     }
   }
