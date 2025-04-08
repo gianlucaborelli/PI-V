@@ -25,4 +25,9 @@ export class CompanyService {
     let result = this.http.post<CompanyModel>(this.API_URL, company);
     return result
   }
+
+  updateCompany(company: CompanyModel): Observable<CompanyModel> {
+    let result = this.http.put<CompanyModel>(this.API_URL, company);
+    return result
+  }
 }

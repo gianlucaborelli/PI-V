@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CompanyService } from '../../services/company.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -11,6 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { CompanyModel } from '../../models/company.model';
 import { ModuleService } from '../../../modules/services/module.service';
 import { ModuleModel } from '../../../modules/models/module.model';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
+
 
 @Component({
   selector: 'app-company-view',
@@ -23,6 +26,8 @@ export class CompanyViewComponent implements OnInit {
     private router: ActivatedRoute,
     private moduleService: ModuleService) { }
 
+  readonly dialog = inject(MatDialog);
+
   displayedColumns: string[] = ['id', 'name', 'description', 'type'];
 
   company: CompanyModel = {
@@ -34,6 +39,10 @@ export class CompanyViewComponent implements OnInit {
   modules: ModuleModel[] = [];
 
   ngOnInit(): void {
+    this.updateDataSource();
+  }
+
+  updateDataSource() {
     const companyId = String(this.router.snapshot.paramMap.get('id'));
     this.companyService.getCompanyDetail(companyId).subscribe((data) => {
       this.company = data;
@@ -50,6 +59,17 @@ export class CompanyViewComponent implements OnInit {
       DarkBulbTemperature: 'Bulbo escuro'
     };
     return map[type] ?? type;
+  }
+
+  openEditCompanyDialog() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(CompanyRegistrationComponent, dialogConfig);
+    dialogRef.componentInstance.companyToEdit = this.company;
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.updateDataSource();
+      }
+    });
   }
 
   openDialog() { }
