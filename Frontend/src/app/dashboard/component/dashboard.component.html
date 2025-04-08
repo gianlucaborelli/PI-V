@@ -41,6 +41,7 @@
 </div>
 
 <div style="height: 60px"></div>
+@if (dashboardData.series?.length! > 0) {
 <div>
   <div style="display: flex; justify-content: space-around">
     <ngx-charts-line-chart
@@ -114,3 +115,8 @@
     </mat-card>
   </div>
 </div>
+}@else {
+<div style="display: flex; justify-content: center">
+  <p>Selecione a Empresa e qual Módulo você quer visualizar</p>
+</div>
+}
