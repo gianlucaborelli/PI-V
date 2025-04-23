@@ -17,7 +17,10 @@ namespace Service.Api.Service.SystemManager.Application
 
         public async Task<DashboardResponse> GetDashboardDataAsync(Guid moduleId, DateTime? queryDate)
         {
-            var date = queryDate == null ? DateTime.UtcNow.Date : queryDate.Value.ToUniversalTime().Date;
+            var tz = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+            var localDate = DateTime.SpecifyKind((queryDate ?? DateTime.Now).Date, DateTimeKind.Unspecified);
+
+            var date = TimeZoneInfo.ConvertTimeToUtc(localDate, tz);
             var nextDate = date.AddDays(1);
 
             var humiditySensor = await _context.Sensors
