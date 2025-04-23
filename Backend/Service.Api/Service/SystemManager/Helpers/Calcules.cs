@@ -50,7 +50,7 @@ namespace Service.Api.Service.SystemManager.Helpers
                 )
                 .Select(g => new SensorSeries
                 {
-                    Name = g.Key.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+                    Name = g.Key,
                     Value = Math.Round(g.Average(d => d.Value), 2)
                 })
                 .OrderBy(s => s.Name)
