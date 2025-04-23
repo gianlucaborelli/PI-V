@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { DashboardService } from '../service/dashboard.service';
 import { DashboardModel } from '../models/dashboard.model';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
@@ -10,6 +10,20 @@ import { ModuleService } from '../../modules/services/module.service';
 import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
+import localePt from '@angular/common/locales/pt';
+import { LOCALE_ID } from '@angular/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS
+} from '@angular/material-moment-adapter';
+import { MY_FORMATS } from '../../shared/constants/MY_FORMATS ';
+import * as _moment from 'moment';
+import 'moment/locale/pt-br';
+
+registerLocaleData(localePt);
+const moment = _moment;
+moment.locale('pt-br');
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +33,13 @@ import { MatSelectChange } from '@angular/material/select';
     CommonModule,
     NgxChartsModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+  ]
 })
 export class DashboardComponent implements OnInit {
   dashboardData: DashboardModel = {
@@ -100,8 +120,10 @@ export class DashboardComponent implements OnInit {
 
   addEvent(event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null) {
-      this.dateSelected = event.value;
-      this.dashboardService.getDashboardData(this.modulesSelected, event.value).subscribe({
+      const selectedDate = (event.value as unknown as moment.Moment).toDate(); // conversão explícita
+
+      this.dateSelected = selectedDate;
+      this.dashboardService.getDashboardData(this.modulesSelected, selectedDate).subscribe({
         next: (data: DashboardModel) => {
           this.dashboardData = data;
         },
