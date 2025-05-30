@@ -12,7 +12,9 @@ namespace Service.Api.Service.SystemManager.Config
             services.AddDbContext<ServiceDatabaseContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<ISystemService, SystemService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IModuleService, ModuleService>();
+            services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<ISensorDataService, SensorDataService>();
             services.AddScoped<IDashboardService, DashboardService>();
         }
