@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Api.Core;
-using Service.Api.Service.SystemManager.Application;
+using Service.Api.Service;
 using Service.Api.Service.SystemManager.Models.DTO;
 
 namespace Service.Api.Controllers
@@ -10,9 +10,9 @@ namespace Service.Api.Controllers
     [Authorize]
     public class ModuleController : MainController
     {
-        private readonly ISystemService _systemService;
+        private readonly IModuleService _systemService;
 
-        public ModuleController(ISystemService systemService)
+        public ModuleController(IModuleService systemService)
         {
             _systemService = systemService;
         }

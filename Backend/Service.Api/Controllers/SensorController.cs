@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Api.Core;
+using Service.Api.Service;
 using Service.Api.Service.SystemManager.Application;
 using Service.Api.Service.SystemManager.Models.DTO;
 
@@ -10,9 +11,9 @@ namespace Service.Api.Controllers
     [Authorize]
     public class SensorController : MainController
     {
-        private readonly ISystemService _systemService;
+        private readonly ISensorService _systemService;
 
-        public SensorController(ISystemService systemService)
+        public SensorController(ISensorService systemService)
         {
             _systemService = systemService;
         }
