@@ -3,7 +3,6 @@
     public class UpdateCompanyResponse
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public List<string> Tags { get; set; }
+        public required string Name { get; set; }
     }
 }

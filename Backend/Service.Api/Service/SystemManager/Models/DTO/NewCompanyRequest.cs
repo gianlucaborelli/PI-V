@@ -2,8 +2,6 @@
 {
     public class NewCompanyRequest
     {
-
         public required string Name { get; set; }
-        public List<string> Tags { get; set; } = [];
     }
 }

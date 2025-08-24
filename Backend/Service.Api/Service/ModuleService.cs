@@ -23,7 +23,9 @@ namespace Service.Api.Service
 
             var modules = _context.Modules
                 .Where(m => m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
-                .Include(m => m.Sensors)
+                .Include(m => m.Locations)
+                    .ThenInclude(l => l.RiskLimits)
+                .Include(m => m.AccessToken)
                 .ToList();
 
             return modules.ToModuleDto();
@@ -35,7 +37,8 @@ namespace Service.Api.Service
 
             var module = _context.Modules
                 .Where(m => m.Id == id && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
-                .Include(m => m.Sensors)
+                .Include(m => m.Locations)
+                .Include(m => m.AccessToken)
                 .FirstOrDefault();
 
             if (module == null)
@@ -74,8 +77,9 @@ namespace Service.Api.Service
             if (module == null)
                 throw new Exception("Module not found");
 
+            module.Name = request.Name;
+            module.Description = request.Description;
             module.EspId = request.EspId;
-            module.Tag = request.Tag;
 
             _context.SaveChanges();
 
@@ -95,7 +99,68 @@ namespace Service.Api.Service
 
             _context.Modules.Remove(module);
             _context.SaveChanges();
+        }        
+
+        public bool GetNewModuleAccessToken(Guid companyId, Guid id)
+        {
+            var userId = _loggedInUser.GetUserId();
+            var module = _context.Modules
+                .Include(m => m.AccessToken)
+                .Where(m => m.Id == id && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
+                .FirstOrDefault();
+            if (module == null)
+                throw new Exception("Module not found");
+            
+            module.AccessToken.RegenerateToken();
+            
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool ValidateModuleAccessToken(Guid companyId, Guid id, string moduleAccessToken)
+        {
+            var userId = _loggedInUser.GetUserId();
+            var module = _context.Modules
+                .Include(m => m.AccessToken)
+                .Where(m => m.Id == id && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
+                .FirstOrDefault();
+            if (module == null)
+                throw new Exception("Module not found");
+
+            var result = module.AccessToken?.Token == moduleAccessToken && module.AccessToken.IsActive && module.AccessToken.ExpiresAt > DateTime.UtcNow;
+
+            if (!result)
+                return false;
+
+            module.AccessToken!.Revoke();
+            _context.SaveChanges();
+            return result;
+        }
+
+        public void RevokeModuleAccessToken(Guid companyId, Guid id)
+        {
+            var userId = _loggedInUser.GetUserId();
+            var module = _context.Modules
+                .Include(m => m.AccessToken)
+                .Where(m => m.Id == id && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
+                .FirstOrDefault();
+
+            if (module == null)
+                throw new Exception("Module not found");
+            
+            module.AccessToken.Revoke();
+            _context.SaveChanges();            
+        }
+
+        private void ValidateModuleOwnership(Guid companyId, Guid moduleId)
+        {
+            var userId = _loggedInUser.GetUserId();
+            var module = _context.Modules
+                .Where(m => m.Id == moduleId && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
+                .FirstOrDefault();
+            if (module == null)
+                throw new Exception("Module not found or you do not have permission to access it");
+            if (module.CompanyId != companyId)
+                throw new Exception("Module does not belong to the specified company");
         }
     }
-
 }

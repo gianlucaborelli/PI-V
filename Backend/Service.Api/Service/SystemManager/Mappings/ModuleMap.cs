@@ -10,11 +10,7 @@ public class ModuleMap : IEntityTypeConfiguration<Module>
     {
         builder.ToTable("Modules");
 
-        builder.HasKey(m => m.Id);
-
-        builder.Property(m => m.Tag)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.HasKey(m => m.Id);       
 
         builder.Property(m => m.EspId)
             .HasMaxLength(50);
@@ -24,9 +20,14 @@ public class ModuleMap : IEntityTypeConfiguration<Module>
             .HasForeignKey(m => m.CompanyId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(m => m.Sensors)
+        builder.HasMany(m => m.Locations)
             .WithOne(s => s.Module)
             .HasForeignKey(s => s.ModuleId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(m => m.AccessToken)
+            .WithOne()
+            .HasForeignKey<ModuleAccessToken>(mat => mat.ModuleId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

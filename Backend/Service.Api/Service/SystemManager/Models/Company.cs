@@ -9,8 +9,6 @@ namespace Service.Api.Service.SystemManager.Models
 
         public required string Name { get; set; }
         
-        public List<string> Tags { get; set; } = [];
-
         public List<Module> Modules { get; set; } = [];
     }
 }

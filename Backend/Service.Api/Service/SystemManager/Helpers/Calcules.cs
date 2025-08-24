@@ -34,33 +34,33 @@ namespace Service.Api.Service.SystemManager.Helpers
                 (0.3 * dryBulbAverage), 2);
         }
 
-        public static SensorDataDto NormalizeSensorData(string sensorName, List<SensorData> data, TimeSpan interval)
-        {
-            var grouped = data
-                .GroupBy(d =>
-                    new DateTime(
-                        d.CreatedAt.Year,
-                        d.CreatedAt.Month,
-                        d.CreatedAt.Day,
-                        d.CreatedAt.Hour,
-                        d.CreatedAt.Minute / interval.Minutes * interval.Minutes,
-                        0,
-                        DateTimeKind.Utc
-                    )
-                )
-                .Select(g => new SensorSeries
-                {
-                    Name = g.Key,
-                    Value = Math.Round(g.Average(d => d.Value), 2)
-                })
-                .OrderBy(s => s.Name)
-                .ToList();
+        //public static SensorDataDto NormalizeSensorData(string sensorName, List<SensorData> data, TimeSpan interval)
+        //{
+        //    var grouped = data
+        //        .GroupBy(d =>
+        //            new DateTime(
+        //                d.CreatedAt.Year,
+        //                d.CreatedAt.Month,
+        //                d.CreatedAt.Day,
+        //                d.CreatedAt.Hour,
+        //                d.CreatedAt.Minute / interval.Minutes * interval.Minutes,
+        //                0,
+        //                DateTimeKind.Utc
+        //            )
+        //        )
+        //        .Select(g => new SensorSeries
+        //        {
+        //            Name = g.Key,
+        //            Value = Math.Round(g.Average(d => d.Value), 2)
+        //        })
+        //        .OrderBy(s => s.Name)
+        //        .ToList();
 
-            return new SensorDataDto
-            {
-                Name = sensorName,
-                Series = grouped
-            };
-        }
+        //    return new SensorDataDto
+        //    {
+        //        Name = sensorName,
+        //        Series = grouped
+        //    };
+        //}
     }
 }

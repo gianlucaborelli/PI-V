@@ -10,12 +10,9 @@ namespace Service.Api.Service.SystemManager.Mappings
         {
             builder.HasKey(sd => sd.Id);
 
-            builder.Property(sd => sd.Value)
-                .IsRequired();
-
-            builder.HasOne(sd => sd.Sensor)
+            builder.HasOne(sd => sd.Location)
                 .WithMany(s => s.SensorDatas)
-                .HasForeignKey(sd => sd.SensorId)
+                .HasForeignKey(sd => sd.LocationId)
                 .OnDelete(DeleteBehavior.Cascade); 
         }
     }

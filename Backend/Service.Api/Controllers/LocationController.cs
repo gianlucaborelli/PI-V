@@ -2,18 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Api.Core;
 using Service.Api.Service;
-using Service.Api.Service.SystemManager.Application;
 using Service.Api.Service.SystemManager.Models.DTO;
 
 namespace Service.Api.Controllers
 {
-    [Route("api/system-manager/company/{companyId}/module/{moduleId}/sensor")]
+    [Route("api/system-manager/company/{companyId}/module/{moduleId}/location")]
     [Authorize]
-    public class SensorController : MainController
+    public class LocationController : MainController
     {
-        private readonly ISensorService _systemService;
+        private readonly ILocationService _systemService;
 
-        public SensorController(ISensorService systemService)
+        public LocationController(ILocationService systemService)
         {
             _systemService = systemService;
         }
@@ -21,38 +20,38 @@ namespace Service.Api.Controllers
         [HttpGet]
         public IActionResult GetAll(Guid companyId, Guid moduleId)
         {
-            var response = _systemService.GetAllSensors(companyId, moduleId);
+            var response = _systemService.GetAllLocations(companyId, moduleId);
             return Ok(response);
         }
 
         [HttpGet("{sensorId}")]
         public IActionResult GetById(Guid companyId, Guid moduleId, Guid sensorId)
         {
-            var response = _systemService.GetSensorById(companyId, moduleId, sensorId);
+            var response = _systemService.GetLocationById(companyId, moduleId, sensorId);
             return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult Register(Guid companyId, Guid moduleId, [FromBody] NewSensorRequest request)
+        public IActionResult Register(Guid companyId, Guid moduleId, [FromBody] NewLocationRequest request)
         {
             request.CompanyId = companyId;
             request.ModuleId = moduleId;
-            var response = _systemService.RegisterNewSensor(request);
+            var response = _systemService.RegisterNewLocation(request);
             return Ok(response);
         }
 
         [HttpPut]
-        public IActionResult Update(Guid companyId, Guid moduleId, [FromBody] SensorDto request)
+        public IActionResult Update(Guid companyId, Guid moduleId, [FromBody] LocationDto request)
         {
             request.ModuleId = moduleId;
-            var response = _systemService.UpdateSensor(request);
+            var response = _systemService.UpdateLocation(request);
             return Ok(response);
         }
 
         [HttpDelete("{sensorId}")]
         public IActionResult Delete(Guid companyId, Guid moduleId, Guid sensorId)
         {
-            _systemService.DeleteSensor(sensorId);
+            _systemService.DeleteLocation(sensorId);
             return Ok();
         }
     }

@@ -4,13 +4,28 @@ namespace Service.Api.Service.SystemManager.Models
 {
     public class Module : EntityBase
     {
-        public required string Tag { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
         public string? EspId { get; set; }
-
-        // Chave estrangeira para Company
+        
         public Guid CompanyId { get; set; }
-        public Company Company { get; set; }
+        public Company Company { get; set; } = null!;
 
-        public List<Sensor> Sensors { get; set; } = [];
+        public List<Location> Locations { get; set; } = [];
+        public ModuleAccessToken AccessToken { get; set; }
+
+        protected Module()
+        {         
+            AccessToken = new ModuleAccessToken(Guid.Empty);
+        }
+
+        public Module(string name, Guid companyId, string? description = null, string? espId = null)
+        {
+            Name = name;
+            CompanyId = companyId;
+            Description = description;
+            EspId = espId;
+            AccessToken = new ModuleAccessToken(this.Id);
+        }
     }
 }

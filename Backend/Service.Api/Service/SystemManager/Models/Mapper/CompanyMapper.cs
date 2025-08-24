@@ -8,8 +8,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
         {
             return new Company
             {
-                Name = request.Name,
-                Tags = request.Tags
+                Name = request.Name
             };
         }
 
@@ -18,8 +17,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             return new Company
             {
                 Id = request.Id,
-                Name = request.Name,
-                Tags = request.Tags
+                Name = request.Name
             };
         }
 
@@ -28,8 +26,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             return new NewCompanyResponse
             {
                 Id = company.Id,
-                Name = company.Name,
-                Tags = company.Tags
+                Name = company.Name
             };
         }
 
@@ -38,8 +35,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             return new UpdateCompanyResponse
             {
                 Id = company.Id,
-                Name = company.Name,
-                Tags = company.Tags
+                Name = company.Name
             };
         }
 
@@ -48,8 +44,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             return new CompanyDto
             {
                 Id = company.Id,
-                Name = company.Name,
-                Tags = company.Tags
+                Name = company.Name
             };
         }
 

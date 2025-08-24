@@ -71,7 +71,6 @@ namespace Service.Api.Service
                 throw new Exception("Company not found");
 
             company.Name = request.Name;
-            company.Tags = request.Tags;
 
             _context.SaveChanges();
 

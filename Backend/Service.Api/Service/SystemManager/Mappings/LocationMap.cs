@@ -5,28 +5,28 @@ using Service.Api.Service.SystemManager.Models;
 
 namespace Service.Api.Service.SystemManager.Mappings
 {
-    public class SensorMap : IEntityTypeConfiguration<Sensor>
+    public class LocationMap : IEntityTypeConfiguration<Location>
     {
-        public void Configure(EntityTypeBuilder<Sensor> builder)
+        public void Configure(EntityTypeBuilder<Location> builder)
         {
+            builder.ToTable("Locations");
+
             builder.HasKey(s => s.Id);
             builder.Property(s => s.Name).IsRequired().HasMaxLength(200);
             builder.Property(s => s.Description).HasMaxLength(500);
 
             builder.HasOne(s => s.Module)
-                .WithMany(m => m.Sensors)
+                .WithMany(m => m.Locations)
                 .HasForeignKey(s => s.ModuleId);
 
-            
-            var converter = new ValueConverter<SensorType, string>(
-                v => v.Name, 
-                v => SensorType.FromName(v)
-            );
+            // Configura a relação com RiskLimit
+            builder.HasMany(s => s.RiskLimits)
+                .WithMany(rl => rl.Locations);
 
-            builder.Property(s => s.SensorType)
-                .HasConversion(converter)
-                .IsRequired()
-                .HasMaxLength(50);
+            builder.HasMany(s => s.SensorDatas)
+                .WithOne(sd => sd.Location)
+                .HasForeignKey(sd => sd.LocationId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

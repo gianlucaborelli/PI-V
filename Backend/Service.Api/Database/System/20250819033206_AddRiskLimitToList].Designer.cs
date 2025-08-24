@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Service.Api.Database;
 
 #nullable disable
 
-namespace Service.Api.Database.Migrations.System
+namespace Service.Api.Database.System
 {
     [DbContext(typeof(ServiceDatabaseContext))]
-    partial class ServiceDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250819033206_AddRiskLimitToList]")]
+    partial class AddRiskLimitToList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,10 +55,6 @@ namespace Service.Api.Database.Migrations.System
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Tags")
-                        .IsRequired()
-                        .HasColumnType("JSONB");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -64,38 +63,7 @@ namespace Service.Api.Database.Migrations.System
                     b.ToTable("Companies", "AppService");
                 });
 
-            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Module", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EspId")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("Modules", "AppService");
-                });
-
-            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Sensor", b =>
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Location", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,8 +84,29 @@ namespace Service.Api.Database.Migrations.System
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("SensorType")
-                        .IsRequired()
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("Locations", "AppService");
+                });
+
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Module", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EspId")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -126,9 +115,76 @@ namespace Service.Api.Database.Migrations.System
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModuleId");
+                    b.HasIndex("CompanyId");
 
-                    b.ToTable("Sensors", "AppService");
+                    b.ToTable("Modules", "AppService");
+                });
+
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.ModuleAccessToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModuleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModuleId")
+                        .IsUnique();
+
+                    b.ToTable("ModuleAccessTokens", "AppService");
+                });
+
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.RiskLimit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("LimitValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RiskType")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("RiskLimits", "AppService");
+
+                    b.HasDiscriminator<string>("RiskType").HasValue("RiskLimit");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Service.Api.Service.SystemManager.Models.SensorData", b =>
@@ -140,20 +196,33 @@ namespace Service.Api.Database.Migrations.System
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("SensorId")
+                    b.Property<double>("DarkBulbTemperature")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("DryBulbTemperature")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Humidity")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SensorId");
+                    b.HasIndex("LocationId");
 
                     b.ToTable("SensorDatas", "AppService");
+                });
+
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.IBUTGRiskLimit", b =>
+                {
+                    b.HasBaseType("Service.Api.Service.SystemManager.Models.RiskLimit");
+
+                    b.HasDiscriminator().HasValue("IBUTG");
                 });
 
             modelBuilder.Entity("Service.Api.Service.Authentication.Models.UserCompany", b =>
@@ -167,6 +236,17 @@ namespace Service.Api.Database.Migrations.System
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Location", b =>
+                {
+                    b.HasOne("Service.Api.Service.SystemManager.Models.Module", "Module")
+                        .WithMany("Locations")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
+                });
+
             modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Module", b =>
                 {
                     b.HasOne("Service.Api.Service.SystemManager.Models.Company", "Company")
@@ -178,26 +258,35 @@ namespace Service.Api.Database.Migrations.System
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Sensor", b =>
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.ModuleAccessToken", b =>
                 {
-                    b.HasOne("Service.Api.Service.SystemManager.Models.Module", "Module")
-                        .WithMany("Sensors")
-                        .HasForeignKey("ModuleId")
+                    b.HasOne("Service.Api.Service.SystemManager.Models.Module", null)
+                        .WithOne("AccessToken")
+                        .HasForeignKey("Service.Api.Service.SystemManager.Models.ModuleAccessToken", "ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.RiskLimit", b =>
+                {
+                    b.HasOne("Service.Api.Service.SystemManager.Models.Location", "Location")
+                        .WithMany("RiskLimits")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Module");
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Service.Api.Service.SystemManager.Models.SensorData", b =>
                 {
-                    b.HasOne("Service.Api.Service.SystemManager.Models.Sensor", "Sensor")
+                    b.HasOne("Service.Api.Service.SystemManager.Models.Location", "Location")
                         .WithMany("SensorDatas")
-                        .HasForeignKey("SensorId")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Sensor");
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Company", b =>
@@ -207,14 +296,18 @@ namespace Service.Api.Database.Migrations.System
                     b.Navigation("UserCompanies");
                 });
 
-            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Module", b =>
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Location", b =>
                 {
-                    b.Navigation("Sensors");
+                    b.Navigation("RiskLimits");
+
+                    b.Navigation("SensorDatas");
                 });
 
-            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Sensor", b =>
+            modelBuilder.Entity("Service.Api.Service.SystemManager.Models.Module", b =>
                 {
-                    b.Navigation("SensorDatas");
+                    b.Navigation("AccessToken");
+
+                    b.Navigation("Locations");
                 });
 #pragma warning restore 612, 618
         }

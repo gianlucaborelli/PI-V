@@ -14,8 +14,8 @@ namespace Service.Api.Service.DeviceManager
         {
             var sensorData = new SensorData
             {
-                SensorId = sensorId,
-                Value = value
+                LocationId = sensorId,
+                
             };
 
             _context.SensorDatas.Add(sensorData);

@@ -8,6 +8,8 @@ public class UserCompanyMap : IEntityTypeConfiguration<UserCompany>
 {
     public void Configure(EntityTypeBuilder<UserCompany> builder)
     {
+        builder.ToTable("UserCompanies");
+
         builder.HasKey(uc => new { uc.UserId, uc.CompanyId });
 
         builder.HasOne(uc => uc.Company)
