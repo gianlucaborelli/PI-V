@@ -15,7 +15,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             };
         }
 
-        public static LocationDto ToLocationDto(this Location location)
+        public static LocationDto ToDto(this Location location)
         {
             return new LocationDto
             {
@@ -27,32 +27,11 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
             };
         }
 
-        public static List<LocationDto> ToLocationDtoList(this List<Location> locations)
+        public static List<LocationDto> ToDto(this List<Location> locations)
         {
-            return locations.Select(l => l.ToLocationDto()).ToList();
+            return locations.Select(l => l.ToDto()).ToList();
         }
-
-        // ---------------- RISK LIMIT ----------------
-
-        //public static RiskLimitDto ToDto(this RiskLimit riskLimit)
-        //{
-        //    return new RiskLimitDto
-        //    {
-        //        Id = riskLimit.Id,
                 
-        //        Type = riskLimit.GetType().Name // "IBUTGRiskLimit" etc.
-        //    };
-        //}
-
-        //public static RiskLimit ToEntity(this NewRiskLimitRequest request)
-        //{
-        //    return new RiskLimit
-        //    {
-        //        LocationId = request.LocationId,
-        //        RiskId = request.RiskId                
-        //    };
-        //}
-
         // ---------------- SENSOR DATA ----------------
 
         public static SensorDataDto ToDto(this SensorData sensorData)

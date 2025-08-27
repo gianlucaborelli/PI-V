@@ -22,7 +22,7 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
                 Description = module.Description,
                 EspId = module.EspId,
                 CompanyId = module.CompanyId,
-                Locations = module.Locations.Select(l => l.ToLocationDto()).ToList(),
+                Locations = module.Locations.Select(l => l.ToDto()).ToList(),
                 AccessToken = module.AccessToken.ToAccessTokenDto()
             };
         }

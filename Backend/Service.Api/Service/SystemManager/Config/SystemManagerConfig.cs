@@ -15,7 +15,7 @@ namespace Service.Api.Service.SystemManager.Config
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IModuleService, ModuleService>();
             services.AddScoped<ILocationService, LocationService>();
-            services.AddScoped<ISensorDataService, SensorDataService>();
+            services.AddScoped<IDeviceService, DeviceService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IRiskService, RiskService>();
         }

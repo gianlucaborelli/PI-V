@@ -7,8 +7,8 @@ namespace Service.Api.Controllers
 {
     public class DeviceController : MainController
     {
-        public ISensorDataService sensorDataService { get; set; } = null!;
-        public DeviceController(ISensorDataService service) 
+        private readonly IDeviceService sensorDataService ;
+        public DeviceController(IDeviceService service) 
         {
             sensorDataService = service;
         }
@@ -16,11 +16,29 @@ namespace Service.Api.Controllers
         [HttpPost("sensor-data")]
         public async Task<IActionResult> AddSensorData([FromBody] SensorDataRequest request)
         {
-            var response = await sensorDataService.AddSensorDataAsync(request.SensorId, request.Value);
+            var response = await sensorDataService.AddSensorDataAsync(request);
             if (response)
                 return Ok();
             else
                 return BadRequest("Failed to add sensor data");
+        }
+
+        [HttpPost("validate-module-synchronization")]
+        public async Task<IActionResult> ValidateModuleSynchronization([FromBody] ValidateModuleRequest request)
+        {
+            try
+            {
+                var locations = await sensorDataService.ValidateModuleSincronizationAsync(request.ModuleToken);
+                return Ok(locations);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

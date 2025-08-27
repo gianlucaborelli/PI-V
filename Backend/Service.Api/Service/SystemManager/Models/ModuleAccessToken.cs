@@ -23,6 +23,18 @@ namespace Service.Api.Service.SystemManager.Models
             ExpiresAt = DateTime.UtcNow.AddDays(30); 
         }
 
+        public bool IsValid(string token)
+        {
+            return IsActive && DateTime.UtcNow <= ExpiresAt 
+                            && Token == token 
+                            && IsActive;
+        }
+
+        public bool IsNotValid(string token)
+        {
+            return !IsValid(token);
+        }
+
         public void Revoke()
         {
             IsActive = false;

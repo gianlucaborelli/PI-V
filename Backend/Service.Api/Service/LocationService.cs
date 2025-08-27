@@ -24,7 +24,7 @@ namespace Service.Api.Service
                 .Where(s => s.ModuleId == moduleId && s.Module.CompanyId == companyId && s.Module.Company.UserCompanies.Any(uc => uc.UserId == userId))
                 .ToList();
 
-            return locations.ToLocationDtoList();
+            return locations.ToDto();
         }
 
         public LocationDto GetLocationById(Guid companyId, Guid moduleId, Guid locationId)
@@ -38,7 +38,7 @@ namespace Service.Api.Service
             if (location == null)
                 throw new Exception("Location not found");
 
-            return location.ToLocationDto();
+            return location.ToDto();
         }
 
         public LocationDto RegisterNewLocation(NewLocationRequest request)
@@ -63,7 +63,7 @@ namespace Service.Api.Service
             _context.Locations.Add(newLocation);
             _context.SaveChanges();
 
-            return newLocation.ToLocationDto();
+            return newLocation.ToDto();
         }
 
         public LocationDto UpdateLocation(LocationDto request)
@@ -82,7 +82,7 @@ namespace Service.Api.Service
             
             _context.SaveChanges();
 
-            return location.ToLocationDto();
+            return location.ToDto();
         }
 
         public void DeleteLocation(Guid sensorId)

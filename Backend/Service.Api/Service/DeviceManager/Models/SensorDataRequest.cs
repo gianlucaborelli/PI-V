@@ -2,7 +2,9 @@
 {
     public class SensorDataRequest
     {
-        public Guid SensorId { get; set; }
-        public double Value { get; set; }        
+        public Guid LocalizationId { get; set; }
+        public double? Humidity { get; set; }
+        public double? DryBulbTemperature { get; set; }
+        public double? DarkBulbTemperature { get; set; }
     }
 }
