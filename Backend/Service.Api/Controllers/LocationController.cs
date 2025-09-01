@@ -40,18 +40,18 @@ namespace Service.Api.Controllers
         }
 
         /// <summary>
-        /// Retorna uma localização específica pelo Id do sensor.
+        /// Retorna uma localização específica pelo Id da localização.
         /// </summary>
         /// <param name="companyId">Id da empresa.</param>
         /// <param name="moduleId">Id do módulo.</param>
-        /// <param name="sensorId">Id do sensor/localização.</param>
+        /// <param name="locationId">Id da localização.</param>
         /// <returns>Dados da localização.</returns>
-        [HttpGet("{sensorId}")]
+        [HttpGet("{locationId}")]
         [ProducesResponseType(typeof(LocationDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(Guid companyId, Guid moduleId, Guid sensorId)
+        public IActionResult GetById(Guid companyId, Guid moduleId, Guid locationId)
         {
-            var response = _systemService.GetLocationById(companyId, moduleId, sensorId);
+            var response = _systemService.GetLocationById(companyId, moduleId, locationId);
             if (response == null)
                 return NotFound();
             return Ok(response);
@@ -93,18 +93,18 @@ namespace Service.Api.Controllers
         }
 
         /// <summary>
-        /// Remove uma localização pelo Id do sensor.
+        /// Remove uma localização pelo Id.
         /// </summary>
         /// <param name="companyId">Id da empresa.</param>
         /// <param name="moduleId">Id do módulo.</param>
-        /// <param name="sensorId">Id do sensor/localização.</param>
+        /// <param name="locationId">Id da localização.</param>
         /// <returns>Status da operação.</returns>
-        [HttpDelete("{sensorId}")]
+        [HttpDelete("{locationId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(Guid companyId, Guid moduleId, Guid sensorId)
+        public IActionResult Delete(Guid companyId, Guid moduleId, Guid locationId)
         {
-            _systemService.DeleteLocation(sensorId);
+            _systemService.DeleteLocation(locationId);
             return Ok();
         }
     }
