@@ -30,19 +30,6 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
         public static List<LocationDto> ToDto(this List<Location> locations)
         {
             return locations.Select(l => l.ToDto()).ToList();
-        }
-                
-        // ---------------- SENSOR DATA ----------------
-
-        public static SensorDataDto ToDto(this SensorData sensorData)
-        {
-            return new SensorDataDto
-            {
-                Id = sensorData.Id,
-                Humidity = sensorData.Humidity,
-                DryBulbTemperature = sensorData.DryBulbTemperature,
-                DarkBulbTemperature = sensorData.DarkBulbTemperature
-            };
-        }        
+        }                      
     }
 }
