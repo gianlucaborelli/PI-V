@@ -1,6 +1,6 @@
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SensorsModel } from '../../dashboard/models/sensors.model';
+import { LocationSummaryModel } from '../../dashboard/models/sensors.model';
 import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ModuleService } from '../services/module.service';
@@ -22,10 +22,10 @@ export class ModuleDetailComponent {
   @Input() companyId: string | undefined;
   @Input() readonly module = signal<ModuleModel>({
     id: '',
-    tag: '',
-    sensors: []
+    name: '',
+    locations: []
   });
-  readonly sensors = signal<Array<SensorsModel>>([]);
+  readonly sensors = signal<Array<LocationSummaryModel>>([]);
 
   selectedTag: string | undefined;
   selectedType: string | undefined;
@@ -41,8 +41,8 @@ export class ModuleDetailComponent {
     this.module.update(m => ({
       ...m,
       sensors: [
-        ...(m.sensors ?? []),
-        { type: this.selectedType } as SensorsModel
+        ...(m.locations ?? []),
+        { type: this.selectedType } as LocationSummaryModel
       ]
     }));
   }

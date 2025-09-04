@@ -5,7 +5,7 @@
   >
     <mat-form-field appearance="outline">
       <mat-label>Selecione o setor</mat-label>
-      <mat-select [(ngModel)]="module().tag">
+      <mat-select [(ngModel)]="module().name">
         @for(tag of tags; track tag) {
         <mat-option [value]="tag">
           {{ tag }}
@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  @for(sensor of module().sensors; track sensor) {
+  @for(sensor of module().locations; track sensor) {
   <mat-card appearance="outlined" style="margin-bottom: 10px">
     <mat-card-content style="display: flex; justify-content: space-between">
       <mat-form-field class="example-full-width" appearance="outline">

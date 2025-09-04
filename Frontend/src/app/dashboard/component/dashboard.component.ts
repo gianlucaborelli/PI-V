@@ -20,6 +20,8 @@ import {
 import { MY_FORMATS } from '../../shared/constants/MY_FORMATS ';
 import * as _moment from 'moment';
 import 'moment/locale/pt-br';
+import { LocationSummaryModel } from '../models/sensors.model';
+import { ChartDataPipe } from "../pipes/chartDataPipe";
 
 registerLocaleData(localePt);
 const moment = _moment;
@@ -31,7 +33,9 @@ moment.locale('pt-br');
   imports: [
     ...MATERIAL_MODULES,
     CommonModule,
-    NgxChartsModule],
+    NgxChartsModule,
+    ChartDataPipe
+],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   providers: [
@@ -43,10 +47,9 @@ moment.locale('pt-br');
 })
 export class DashboardComponent implements OnInit {
   dashboardData: DashboardModel = {
-    ibtgEstimation: 0,
-    series: []
+    locationsSummary: []
   };
-
+  processado: any;
   companies: CompanyModel[] = [];
   companySelected!: string;
 
@@ -107,15 +110,17 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDashboardData(selectedId).subscribe({
       next: (data: DashboardModel) => {
         this.dashboardData = data;
+        console.log(data);
       },
       error: (err: any) => {
         console.error('Erro ao carregar sensores:', err);
         this.dashboardData = {
-          ibtgEstimation: 0,
-          series: []
+          locationsSummary: []
         };
       }
     });
+
+    console.log(this.dashboardData);
   }
 
   addEvent(event: MatDatepickerInputEvent<Date>) {
@@ -130,11 +135,36 @@ export class DashboardComponent implements OnInit {
         error: (err: any) => {
           console.error('Erro ao carregar sensores:', err);
           this.dashboardData = {
-            ibtgEstimation: 0,
-            series: []
+            locationsSummary: []
           };
         }
       });
     }
+  }
+
+  transformToChartData(data: any[]): any[] {
+    return [
+      {
+        name: 'Humidity',
+        series: data.map(d => ({
+          name: d.createdAt,
+          value: d.humidity
+        }))
+      },
+      {
+        name: 'Dry Bulb Temperature',
+        series: data.map(d => ({
+          name: d.createdAt,
+          value: d.dryBulbTemperature
+        }))
+      },
+      {
+        name: 'Dark Bulb Temperature',
+        series: data.map(d => ({
+          name: d.createdAt,
+          value: d.darkBulbTemperature
+        }))
+      }
+    ];
   }
 }

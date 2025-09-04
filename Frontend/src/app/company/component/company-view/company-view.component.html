@@ -31,14 +31,14 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Identificador: {{ module.id }} </mat-panel-title>
       <mat-panel-description>
-        Setor: {{ module.tag }}
+        Setor: {{ module.name }}
         <mat-icon>memory</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    @if((module.sensors ?? []).length > 0){
+    @if((module.locations ?? []).length > 0){
     <table
       mat-table
-      [dataSource]="module.sensors ?? []"
+      [dataSource]="module.locations ?? []"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
