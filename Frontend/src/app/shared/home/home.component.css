@@ -2,6 +2,11 @@ mat-toolbar {
   background: #649f8e;
 }
 
+.logo {
+  height: 60px;
+  margin-left: 40px;
+}
+
 mat-sidenav {
   margin: 16px;
   width: 200px;

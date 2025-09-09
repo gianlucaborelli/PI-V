@@ -1,10 +1,11 @@
 import { LocationSummaryModel } from "../../dashboard/models/sensors.model";
+import { LocationModel } from "./location.model";
 
 export interface ModuleModel {
   id?: string;
   name: string;
   description?: string;
-  locations?: LocationSummaryModel[];
+  locations?: LocationModel[];
   accessTokens?: accessTokenModel[];
 }
 

@@ -1,0 +1,12 @@
+.sub-header {
+  font-weight: 500;
+  font-size: 15px;
+  opacity: 0.8;
+  margin-top: 16px;
+  padding-left: 16px; /* indent para subcategoria */
+}
+
+.item-option {
+  padding-left: 32px; /* indent maior para o item */
+  margin-top: 8px;
+}
