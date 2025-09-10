@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Service.Api.Database;
@@ -11,9 +12,11 @@ using Service.Api.Database;
 namespace Service.Api.Database.System
 {
     [DbContext(typeof(ServiceDatabaseContext))]
-    partial class ServiceDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250910000915_NovoLocationsPadrao")]
+    partial class NovoLocationsPadrao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

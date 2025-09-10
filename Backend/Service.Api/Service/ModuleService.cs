@@ -60,6 +60,17 @@ namespace Service.Api.Service
 
             var newModule = request.MapToModule();
 
+           foreach (var locationRequest in request.Locations)
+            {
+                var newLocation = locationRequest.MapToLocation();
+                foreach (var riskLimitRequest in locationRequest.RiskLimits)
+                {
+                    var risk = _context.Risks.Find(riskLimitRequest.RiskId) ?? throw new Exception($"Risk with ID {riskLimitRequest.RiskId} not found");
+                    newLocation.RiskLimits.Add(risk);
+                }
+                newModule.Locations.Add(newLocation);
+            }
+
             _context.Modules.Add(newModule);
             _context.SaveChanges();
 

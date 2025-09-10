@@ -51,25 +51,5 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
                 _ => throw new NotSupportedException($"Tipo de RiskDto não mapeado: {riskDto.GetType().Name}")
             };
         }
-
-        //public static List<Risk> ToEntityList(this List<RiskDto> riskDtos)
-        //{
-        //    return riskDtos.Select(dto => dto switch
-        //    {
-        //        TermoRiskDto termoDto => new TermoRisk
-        //        {
-        //            Id = termoDto.Id,
-        //            Category = termoDto.Category,
-        //            SubCategory = termoDto.SubCategory,
-        //            Activity = termoDto.Activity,
-        //            MetabolicRate = termoDto.MetabolicRate,
-        //            CreatedAt = termoDto.CreatedAt,
-        //            UpdatedAt = termoDto.UpdatedAt
-        //        },
-        //        // quando criar novos tipos, só adicionar mais cases:
-        //        // RuidoRiskDto ruidoDto => new RuidoRisk { ... },
-        //        _ => throw new NotSupportedException($"Tipo de RiskDto não mapeado: {dto.GetType().Name}")
-        //    }).ToList();
-        //}
     }
 }

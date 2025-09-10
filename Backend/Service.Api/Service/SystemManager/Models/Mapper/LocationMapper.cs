@@ -30,6 +30,16 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
         public static List<LocationDto> ToDto(this List<Location> locations)
         {
             return locations.Select(l => l.ToDto()).ToList();
-        }                      
+        }     
+        
+        public static Location ToDto(this NewLocationRequest location)
+        {
+            return new Location
+            {
+                Name = location.Name,
+                Description = location.Description,
+                ModuleId = location.ModuleId
+            };
+        }
     }
 }
