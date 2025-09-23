@@ -20,7 +20,7 @@
       (selectionChange)="onModuleSelected($event)"
     >
       <mat-option *ngFor="let item of modules" [value]="item.id">
-        {{ item.tag }}
+        {{ item.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -41,7 +41,8 @@
 </div>
 
 <div style="height: 60px"></div>
-@if (dashboardData.series?.length! > 0) {
+@if (dashboardData.locationsSummary?.length! > 0) { @for (locationSummary of
+dashboardData.locationsSummary; track locationSummary.name) {
 <div>
   <div style="display: flex; justify-content: space-around">
     <ngx-charts-line-chart
@@ -58,7 +59,7 @@
       [xAxisLabel]="xAxisLabel"
       [yAxisLabel]="yAxisLabel"
       [timeline]="timeline"
-      [results]="dashboardData.series"
+      [results]="locationSummary.series | chartData"
     >
     </ngx-charts-line-chart>
   </div>
@@ -71,7 +72,7 @@
         </mat-card-header>
         <mat-card-content
           >{{
-            dashboardData.ibtgEstimation | number : "1.2-2"
+            locationSummary.ibutgEstimation | number : "1.2-2"
           }}
           °C</mat-card-content
         >
@@ -84,7 +85,7 @@
       </mat-card-header>
       <mat-card-content
         >{{
-          dashboardData.temperatureAverage | number : "1.2-2"
+          locationSummary.temperatureAverage | number : "1.2-2"
         }}
         °C</mat-card-content
       >
@@ -96,7 +97,7 @@
       </mat-card-header>
       <mat-card-content
         >{{
-          dashboardData.maxTemperature | number : "1.2-2"
+          locationSummary.maxTemperature | number : "1.2-2"
         }}
         °C</mat-card-content
       >
@@ -108,14 +109,14 @@
       </mat-card-header>
       <mat-card-content
         >{{
-          dashboardData.humidityAverage | number : "1.2-2"
+          locationSummary.humidityAverage | number : "1.2-2"
         }}
         %</mat-card-content
       >
     </mat-card>
   </div>
 </div>
-}@else {
+} }@else {
 <div style="display: flex; justify-content: center">
   <p>Selecione a Empresa e qual Módulo você quer visualizar</p>
 </div>

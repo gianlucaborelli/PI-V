@@ -1,10 +1,6 @@
-import { SensorsModel } from "./sensors.model";
+import { LocationSummaryModel } from "./sensors.model";
 
 export interface DashboardModel {
-  humidityAverage?: number;
-  temperatureAverage?: number;
-  maxTemperature?: number;
-  ibtgEstimation?: number;
-  series?: SensorsModel[];
+  locationsSummary?: LocationSummaryModel[];
 }
 

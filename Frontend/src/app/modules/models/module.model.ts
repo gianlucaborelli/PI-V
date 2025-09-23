@@ -1,7 +1,16 @@
-import { SensorsModel } from "../../dashboard/models/sensors.model";
+import { LocationSummaryModel } from "../../dashboard/models/sensors.model";
+import { LocationModel } from "./location.model";
 
 export interface ModuleModel {
   id?: string;
-  tag: string;
-  sensors?: SensorsModel[];
+  name: string;
+  description?: string;
+  locations?: LocationModel[];
+  accessTokens?: accessTokenModel[];
+}
+
+export interface accessTokenModel {
+  token: string;
+  isActive: boolean;
+  expiresAt: Date;
 }

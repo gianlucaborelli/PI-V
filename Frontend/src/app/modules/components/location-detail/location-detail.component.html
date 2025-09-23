@@ -1,0 +1,64 @@
+<mat-card appearance="outlined" style="margin-bottom: 10px">
+  <mat-card-content
+    style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start"
+  >
+<!-- Campos do LocationModel -->
+    <div
+      style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px"
+    >
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput [(ngModel)]="location.name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descrição</mat-label>
+        <input matInput [(ngModel)]="location.description" />
+      </mat-form-field>
+    </div>
+ <!-- Iterando sobre os riskLimits --> 
+    <ng-container *ngFor="let risk of location.riskLimits; let i = index">
+      <div
+        style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px"
+      >
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Risco</mat-label>
+          <mat-select
+            [(ngModel)]="risk.type"
+            (selectionChange)="onRiskTypeChange(risk, $event.value)"
+          >
+            <mat-option *ngFor="let t of riskTypeList" [value]="t">{{
+              t
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Atividade</mat-label>
+          <mat-select
+            [(ngModel)]="risk.riskId"
+            (selectionChange)="onRiskActivityChange(risk, $event.value)"
+          >
+            <mat-option>-- None --</mat-option>
+            <ng-container *ngFor="let categoria of riskService.categorias()">
+              <mat-optgroup [label]="categoria.nome">
+                <ng-container *ngFor="let sub of categoria.subcategorias">
+                  <mat-option disabled class="sub-header">{{
+                    sub.nome
+                  }}</mat-option>
+                  <mat-option
+                    *ngFor="let item of sub.itens"
+                    [value]="item.id"
+                    class="item-option"
+                  >
+                    &nbsp;&nbsp;&nbsp;{{ item.nome }}
+                  </mat-option>
+                </ng-container>
+              </mat-optgroup>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
