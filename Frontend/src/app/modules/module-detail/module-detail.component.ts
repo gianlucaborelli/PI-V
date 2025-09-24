@@ -1,10 +1,11 @@
-import { Component, inject, Input, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject, Input, signal } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ModuleService } from '../services/module.service';
 import { ModuleModel } from '../models/module.model';
-import { LocationModel, RisksTypeEnum } from '../models/location.model';
+import { LocationModel } from '../models/location.model';
+import { LocationDetailComponent } from "../components/location-detail/location-detail.component";
 
 @Component({
   selector: 'app-module-detail',
@@ -12,55 +13,78 @@ import { LocationModel, RisksTypeEnum } from '../models/location.model';
   imports: [
     ...MATERIAL_MODULES,
     FormsModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    LocationDetailComponent
+  ],
   templateUrl: './module-detail.component.html',
   styleUrls: ['./module-detail.component.css']
 })
 export class ModuleDetailComponent {
   readonly dialogRef = inject(MatDialogRef<ModuleDetailComponent>);
-  @Input() tags: string[] | undefined;
   @Input() companyId: string | undefined;
-  @Input() readonly module = signal<ModuleModel>({
+  @Input() module = signal<ModuleModel>({
     id: '',
     name: '',
+    description: '',
     locations: []
   });
-  readonly locations = signal<Array<LocationModel>>([]);
 
-  selectedTag: string | undefined;
-  selectedType: string | undefined;
-  readonly riskTypeNum = RisksTypeEnum ;
-  riskTypeList: string[] ;
+  form = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl('')
+  });
 
   constructor(
     private moduleService: ModuleService,
   ) {
     this.dialogRef.disableClose = true;
     this.dialogRef.updateSize("60%");
-    this.riskTypeList = Object.values(this.riskTypeNum);
-    console.log(this.riskTypeList)
+
+    effect(() => {
+      const m = this.module();
+      if (m) {
+        this.form.patchValue(m, { emitEvent: false });
+      }
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      this.module.update(m => ({
+        ...m,
+        name: value.name ?? '',
+        description: value.description ?? ''
+      }));
+    });
   }
 
-  addSensor() {
+  addLocation() {
     this.module.update(m => ({
       ...m,
       locations: [
         ...(m.locations ?? []),
-        { type: this.selectedType,
-          name: "",
-          description: "",
-          moduleId: this.module().id,
+        {
+          type: '',
+          name: '',
+          description: '',
           riskLimits: [{
             riskId: "",
             type: ""
           }],
 
-         } as LocationModel
+        } as LocationModel
       ]
     }));
   }
 
+  updateLocation(index: number, updated: LocationModel) {
+    this.module.update(m => {
+      const locations = [...(m.locations ?? [])];
+      locations[index] = updated;
+      return { ...m, locations };
+    });
+  }
+
   registerModule() {
+    console.log("Registering module:", this.module());
     this.moduleService.insertModule(this.companyId!, this.module()).subscribe({
       next: (response) => {
         console.log("Module registered successfully:", response);

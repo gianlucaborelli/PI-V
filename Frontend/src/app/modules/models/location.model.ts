@@ -14,7 +14,7 @@ export interface RiskLimitsModel {
   subcategory?: string;
   activity?: string;
   metabolicRate?: number;
-  $type?: string;
-  type: string;
+  type?: string;
+
   riskId?: string;
 }

@@ -8,6 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
 import { ModuleDetailComponent } from '../../../modules/module-detail/module-detail.component';
 import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
+import { TemplateLiteral } from '@angular/compiler';
 
 
 @Component({
