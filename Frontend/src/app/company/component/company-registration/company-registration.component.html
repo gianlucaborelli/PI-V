@@ -1,13 +1,17 @@
 <h2 mat-dialog-title>Adicionar nova Empresa</h2>
 <mat-dialog-content>
   <p>
-    Para Adicionar uma nova empresa, defina um nome e uma lista de setores que
-    será usado para identificar os módulos
+    Para Adicionar uma nova empresa, defina o nome que
+    será usado para identificá-la.
+
+  <!--Para Adicionar uma nova empresa, defina um nome e uma lista de setores que
+    será usado para identificar os módulos -->
   </p>
   <mat-form-field appearance="outline">
     <mat-label>Nome da empresa</mat-label>
     <input matInput [(ngModel)]="name" />
   </mat-form-field>
+  <!-- 
   <p>Para cada setor, utilize virgula ou enter para separá-los.</p>
   <mat-form-field appearance="outline" class="tag-list">
     <mat-label>Lista de setores</mat-label>
@@ -31,6 +35,7 @@
       (matChipInputTokenEnd)="addTag($event)"
     />
   </mat-form-field>
+  -->
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancelar</button>
