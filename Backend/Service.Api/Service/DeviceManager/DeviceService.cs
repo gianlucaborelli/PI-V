@@ -23,23 +23,28 @@ namespace Service.Api.Service.DeviceManager
             return await _context.SaveChangesAsync() > 0 ;
         }
 
-        public async Task<List<LocationDto>> ValidateModuleSincronizationAsync(string moduleToken)
+        public async Task<ModuleDto> ValidateModuleSincronizationAsync(string moduleToken)
         {
             var module = await _context.Modules
                 .Include(m => m.AccessToken)
                 .Include(m => m.Locations)
                 .FirstOrDefaultAsync(m => m.AccessToken.Token == moduleToken);
 
-            if ( module.AccessToken.IsNotValid(moduleToken))
+            if (module?.AccessToken == null || module.AccessToken.IsNotValid(moduleToken))
             {
                 throw new UnauthorizedAccessException("Invalid module token.");
             }
 
-            module.AccessToken.Revoke();
+            var result = module.AccessToken?.Token == moduleToken && module.AccessToken.IsActive && module.AccessToken.ExpiresAt > DateTime.UtcNow;
+
+            if (!result)
+                throw new Exception("Token invalid");
+
+            module.AccessToken!.Revoke();
 
             await _context.SaveChangesAsync();
 
-            return module.Locations.ToDto();
+            return module.ToModuleDto();
         }
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Service.Api.Service.Authentication.Configurations;
 using Service.Api.Service.SystemManager.Config;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,

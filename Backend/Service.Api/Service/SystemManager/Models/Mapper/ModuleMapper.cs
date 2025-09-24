@@ -6,11 +6,12 @@ namespace Service.Api.Service.SystemManager.Models.Mapper
     {
         public static Module MapToModule(this NewModuleRequest request)
         {
-            return new Module(request.Name, 
-                              request.CompanyId, 
-                              request.Description, 
-                              request.EspId);
-            
+            return new Module(
+                request.Name,                
+                request.CompanyId,
+                request.Description,
+                request.EspId
+            );
         }
         
         public static ModuleDto ToModuleDto(this Module module)

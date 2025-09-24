@@ -15,7 +15,7 @@ namespace Service.Api.Service
         //GET Module Access Token
         bool GetNewModuleAccessToken(Guid companyId, Guid id);
         //Validate Module Access Token
-        bool ValidateModuleAccessToken(Guid companyId, Guid id, string moduleAccessToken);
+        Task<ModuleDto> ValidateModuleAccessToken(Guid companyId, Guid id, string moduleAccessToken);
         // Revoke Module Access Token
         void RevokeModuleAccessToken(Guid companyId, Guid id);
 

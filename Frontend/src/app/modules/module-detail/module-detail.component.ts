@@ -1,9 +1,13 @@
 import { Component, effect, inject, Input, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject, Input, signal } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ModuleService } from '../services/module.service';
 import { ModuleModel } from '../models/module.model';
+import { LocationModel } from '../models/location.model';
+import { LocationDetailComponent } from "../components/location-detail/location-detail.component";
 import { LocationModel } from '../models/location.model';
 import { LocationDetailComponent } from "../components/location-detail/location-detail.component";
 
@@ -16,6 +20,9 @@ import { LocationDetailComponent } from "../components/location-detail/location-
     ReactiveFormsModule,
     LocationDetailComponent
   ],
+    ReactiveFormsModule,
+    LocationDetailComponent
+  ],
   templateUrl: './module-detail.component.html',
   styleUrls: ['./module-detail.component.css']
 })
@@ -23,10 +30,19 @@ export class ModuleDetailComponent {
   readonly dialogRef = inject(MatDialogRef<ModuleDetailComponent>);
   @Input() companyId: string | undefined;
   @Input() module = signal<ModuleModel>({
+  @Input() module = signal<ModuleModel>({
     id: '',
     name: '',
     description: '',
     locations: []
+    name: '',
+    description: '',
+    locations: []
+  });
+
+  form = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl('')
   });
 
   form = new FormGroup({
@@ -54,11 +70,39 @@ export class ModuleDetailComponent {
         description: value.description ?? ''
       }));
     });
+
+    effect(() => {
+      const m = this.module();
+      if (m) {
+        this.form.patchValue(m, { emitEvent: false });
+      }
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      this.module.update(m => ({
+        ...m,
+        name: value.name ?? '',
+        description: value.description ?? ''
+      }));
+    });
   }
 
   addLocation() {
+  addLocation() {
     this.module.update(m => ({
       ...m,
+      locations: [
+        ...(m.locations ?? []),
+        {
+          type: '',
+          name: '',
+          description: '',
+          riskLimits: [{
+            riskId: "",
+            type: ""
+          }],
+
+        } as LocationModel
       locations: [
         ...(m.locations ?? []),
         {

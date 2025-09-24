@@ -60,6 +60,17 @@ namespace Service.Api.Service
 
             var newModule = request.MapToModule();
 
+           foreach (var locationRequest in request.Locations)
+            {
+                var newLocation = locationRequest.MapToLocation();
+                foreach (var riskLimitRequest in locationRequest.RiskLimits)
+                {
+                    var risk = _context.Risks.Find(riskLimitRequest.RiskId) ?? throw new Exception($"Risk with ID {riskLimitRequest.RiskId} not found");
+                    newLocation.RiskLimits.Add(risk);
+                }
+                newModule.Locations.Add(newLocation);
+            }
+
             _context.Modules.Add(newModule);
             _context.SaveChanges();
 
@@ -116,7 +127,7 @@ namespace Service.Api.Service
             return _context.SaveChanges() > 0;
         }
 
-        public bool ValidateModuleAccessToken(Guid companyId, Guid id, string moduleAccessToken)
+        public async Task<ModuleDto> ValidateModuleAccessToken(Guid companyId, Guid id, string moduleAccessToken)
         {
             var userId = _loggedInUser.GetUserId();
             var module = _context.Modules
@@ -129,11 +140,17 @@ namespace Service.Api.Service
             var result = module.AccessToken?.Token == moduleAccessToken && module.AccessToken.IsActive && module.AccessToken.ExpiresAt > DateTime.UtcNow;
 
             if (!result)
-                return false;
+                throw new Exception("Token invalid");
 
             module.AccessToken!.Revoke();
-            _context.SaveChanges();
-            return result;
+            await _context.SaveChangesAsync();
+
+            var moduleResponse = _context.Modules
+                .Include(m => m.Locations)
+                .Where(m => m.Id == id && m.CompanyId == companyId && m.Company.UserCompanies.Any(uc => uc.UserId == userId))
+                .FirstOrDefault();
+
+            return moduleResponse.ToModuleDto();
         }
 
         public void RevokeModuleAccessToken(Guid companyId, Guid id)

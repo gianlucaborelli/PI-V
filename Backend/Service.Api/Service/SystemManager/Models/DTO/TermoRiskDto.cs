@@ -3,7 +3,7 @@
 namespace Service.Api.Service.SystemManager.Models.DTO
 {
 
-    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(TermoRiskDto), typeDiscriminator: "TermoRisk")]
     public abstract class RiskDto
     {

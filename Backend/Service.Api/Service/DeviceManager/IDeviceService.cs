@@ -7,6 +7,6 @@ namespace Service.Api.Service.DeviceManager
     {
         Task<bool> AddSensorDataAsync(SensorDataRequest request);
 
-        Task<List<LocationDto>> ValidateModuleSincronizationAsync(string moduleToken);
+        Task<ModuleDto> ValidateModuleSincronizationAsync(string moduleToken);
     }
 }

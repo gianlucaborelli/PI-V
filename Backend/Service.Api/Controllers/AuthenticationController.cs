@@ -13,6 +13,9 @@ using Service.Api.Service.Authentication.Models.DTO;
 
 namespace Service.Api.Controllers
 {
+    /// <summary>
+    /// Controller responsável pelas operações de autenticação de usuários.
+    /// </summary>
     [Route("api/users/account")]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -26,6 +29,9 @@ namespace Service.Api.Controllers
         private readonly IJwtAuthManager _jwtManager;
         private readonly IdentityContext _identityDbContext;
 
+        /// <summary>
+        /// Construtor do AuthenticationController.
+        /// </summary>
         public AuthenticationController(
             ILogger<AuthenticationController> logger,
             SignInManager<AppUser> signInManager,
@@ -43,12 +49,17 @@ namespace Service.Api.Controllers
             _logger.LogInformation("Authentication controller called");
         }
 
+        /// <summary>
+        /// Realiza o registro de um novo usuário.
+        /// </summary>
+        /// <param name="createUser">Dados do usuário para registro.</param>
+        /// <returns>Resultado da operação de registro.</returns>
         [HttpPost("register")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Register(RegisterRequest createUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -82,13 +93,18 @@ namespace Service.Api.Controllers
 
             return CustomResponse();
         }
-        
+
+        /// <summary>
+        /// Realiza o login do usuário.
+        /// </summary>
+        /// <param name="requestDto">Dados de login do usuário.</param>
+        /// <returns>Token de acesso e refresh token.</returns>
         [HttpPost("login")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Login(LoginRequest requestDto)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -119,22 +135,26 @@ namespace Service.Api.Controllers
                     AddError("You need to confirm your email!");
                     return CustomResponse();
                 }
-            }            
+            }
 
             AddError("Incorrect user or password");
             return CustomResponse();
         }
 
+        /// <summary>
+        /// Realiza a atualização do token de acesso utilizando o refresh token.
+        /// </summary>
+        /// <param name="request">Dados do token de acesso e refresh token.</param>
+        /// <returns>Novos tokens de acesso e refresh.</returns>
         [HttpPost("refresh-token")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ICollection<string>), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var principal = _jwtManager.GetPrincipalFromExpiredToken(request.AccessToken);
             var result = await _jwtManager.ValidateRefresToken(request.RefreshToken, principal.GetUserId());
-
 
             if (result.IsValid)
             {
@@ -157,14 +177,18 @@ namespace Service.Api.Controllers
 
             return Unauthorized(errors);
         }
-                
+
+        /// <summary>
+        /// Realiza o logout do usuário autenticado.
+        /// </summary>
+        /// <returns>Resultado da operação de logout.</returns>
         [HttpPost("logout")]
         [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
         public async Task<ActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return NoContent();
-        }       
+        }
     }
 }
