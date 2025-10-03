@@ -19,39 +19,28 @@ import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
   styleUrls: ['./company-registration.component.css']
 })
 export class CompanyRegistrationComponent implements OnInit {
-  @Input() companyToEdit: CompanyModel | undefined;
+  @Input({ required: false }) companyToEdit?: CompanyModel;
 
   readonly dialogRef = inject(MatDialogRef<CompanyRegistrationComponent>);
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentTag = model('');
-  name = '';
+  company: CompanyModel = { name: '' };
 
   constructor(private service: CompanyService) { }
 
   ngOnInit(): void {
     if (this.companyToEdit) {
-      this.name = this.companyToEdit.name;
+      this.company = { ...this.companyToEdit };
     }
   }
 
   registerCompany(): void {
-    if (this.companyToEdit) {
-      this.companyToEdit.name = this.name;
-      this.service.updateCompany(this.companyToEdit).subscribe({
-        next: (response) => {
-          this.dialogRef.close(response.id);
-        }
-      });
-    }
-    else {
-      const company: CompanyModel = {
-        name: this.name,
-      };
-      this.service.registerNewCompany(company).subscribe({
-        next: (response) => {
-          this.dialogRef.close(response.id);
-        }
-      });
-    }
+    const request$ = this.companyToEdit
+      ? this.service.updateCompany(this.company)
+      : this.service.registerNewCompany(this.company);
+
+    request$.subscribe({
+      next: (response) => this.dialogRef.close(response.id),
+    });
   }
 }
