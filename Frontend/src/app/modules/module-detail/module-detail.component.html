@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  @for(location of module().locations; track location) {
+  @for(location of module?.locations; track location) {
   <app-location-detail
     [location]="location"
     (locationChange)="updateLocation($index, $event)"

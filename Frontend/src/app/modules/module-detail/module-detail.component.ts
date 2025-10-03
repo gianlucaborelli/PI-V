@@ -22,7 +22,13 @@ import { LocationDetailComponent } from "../components/location-detail/location-
 export class ModuleDetailComponent {
   readonly dialogRef = inject(MatDialogRef<ModuleDetailComponent>);
   @Input() companyId: string | undefined;
-  @Input() module = signal<ModuleModel>({
+  @Input() set module(value: ModuleModel | undefined) {
+    if (value) {
+      this._module.set(value);
+    }
+  }
+
+  _module = signal<ModuleModel>({
     id: '',
     name: '',
     description: '',
@@ -34,6 +40,10 @@ export class ModuleDetailComponent {
     description: new FormControl('')
   });
 
+  get module() {
+    return this._module;
+  }
+
   constructor(
     private moduleService: ModuleService,
   ) {
@@ -41,14 +51,14 @@ export class ModuleDetailComponent {
     this.dialogRef.updateSize("60%");
 
     effect(() => {
-      const m = this.module();
+      const m = this.module;
       if (m) {
         this.form.patchValue(m, { emitEvent: false });
       }
     });
 
     this.form.valueChanges.subscribe(value => {
-      this.module.update(m => ({
+      this._module.update(m => ({
         ...m,
         name: value.name ?? '',
         description: value.description ?? ''
@@ -57,7 +67,7 @@ export class ModuleDetailComponent {
   }
 
   addLocation() {
-    this.module.update(m => ({
+    this._module.update(m => ({
       ...m,
       locations: [
         ...(m.locations ?? []),
@@ -76,7 +86,7 @@ export class ModuleDetailComponent {
   }
 
   updateLocation(index: number, updated: LocationModel) {
-    this.module.update(m => {
+    this._module.update(m => {
       const locations = [...(m.locations ?? [])];
       locations[index] = updated;
       return { ...m, locations };
@@ -84,8 +94,8 @@ export class ModuleDetailComponent {
   }
 
   registerModule() {
-    console.log("Registering module:", this.module());
-    this.moduleService.insertModule(this.companyId!, this.module()).subscribe({
+    console.log("Registering module:", this._module);
+    this.moduleService.insertModule(this.companyId!, this._module).subscribe({
       next: (response) => {
         console.log("Module registered successfully:", response);
         this.dialogRef.close(response);

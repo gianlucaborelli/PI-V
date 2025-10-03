@@ -39,3 +39,36 @@ span {
   color: #000000;
   margin-left: 5px;
 }
+
+.panel-description {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.module-description {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.access-token {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.access-token.active {
+  border-color: #2e7d32;
+  background-color: #e8f5e9;
+}
+
+.access-token.inactive {
+  border-color: #c62828;
+  background-color: #ffebee;
+}

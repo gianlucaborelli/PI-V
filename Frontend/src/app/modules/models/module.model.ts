@@ -6,7 +6,7 @@ export interface ModuleModel {
   name: string;
   description?: string;
   locations?: LocationModel[];
-  accessTokens?: accessTokenModel[];
+  accessToken?: accessTokenModel;
 }
 
 export interface accessTokenModel {

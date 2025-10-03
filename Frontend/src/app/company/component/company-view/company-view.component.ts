@@ -8,11 +8,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
 import { ModuleDetailComponent } from '../../../modules/module-detail/module-detail.component';
 import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-company-view',
   imports: [
-    ...MATERIAL_MODULES,],
+    ...MATERIAL_MODULES, CommonModule],
   templateUrl: './company-view.component.html',
   styleUrl: './company-view.component.css'
 })
@@ -23,7 +24,7 @@ export class CompanyViewComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['name', 'description', 'type'];
+  displayedColumns: string[] = ['name', 'description'];
 
   company: CompanyModel = {
     id: ``,
@@ -46,15 +47,6 @@ export class CompanyViewComponent implements OnInit {
     });
   }
 
-  translateType(type: string): string {
-    const map: Record<string, string> = {
-      DryBulbTemperature: 'Bulbo Seco',
-      Humidity: 'Umidade',
-      DarkBulbTemperature: 'Bulbo escuro'
-    };
-    return map[type] ?? type;
-  }
-
   openEditCompanyDialog() {
     const dialogConfig = new MatDialogConfig();
     const dialogRef = this.dialog.open(CompanyRegistrationComponent, dialogConfig);
@@ -72,6 +64,35 @@ export class CompanyViewComponent implements OnInit {
     dialogConfig.maxWidth = '90vw';
     const dialogRef = this.dialog.open(ModuleDetailComponent, dialogConfig);
     dialogRef.componentInstance.companyId = this.company.id;
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.updateDataSource();
+      }
+    });
+  }
+
+  refreshModuleToken(module: any): void {
+    // lógica para renovar o token
+    console.log("Atualizar token para:", module.name);
+  }
+
+  deleteModule(module: any): void {
+    const confirmed = window.confirm(`Tem certeza que deseja excluir o módulo "${module.name}"?`);
+    if (confirmed) {
+      // Usuário confirmou → chama o serviço de delete
+      console.log('Excluindo módulo:', module);
+    }
+  }
+
+  updateModule(module: any): void {
+    console.log('Excluindo módulo:', module);
+    // lógica para atualizar o módulo
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '80vw';
+    dialogConfig.maxWidth = '90vw';
+    const dialogRef = this.dialog.open(ModuleDetailComponent, dialogConfig);
+    dialogRef.componentInstance.companyId = this.company.id;
+    dialogRef.componentInstance.module = module;
     dialogRef.afterClosed().subscribe((response) => {
       if (response) {
         this.updateDataSource();
