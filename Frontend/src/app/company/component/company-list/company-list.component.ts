@@ -16,7 +16,7 @@ import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
   styleUrl: './company-list.component.css'
 })
 export class CompanyListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'tags', 'actions'];
+  displayedColumns: string[] = ['name', 'actions'];
   companies: CompanyModel[] = [];
   readonly dialog = inject(MatDialog);
   constructor(
@@ -39,6 +39,16 @@ export class CompanyListComponent implements OnInit {
     return dialogRef.afterClosed().subscribe((response) => {
       if (response) {
         this.router.navigate([`/home/companies/${response}`]);
+      }
+    });
+  }
+
+  deleteCompany(company: CompanyModel) {
+    this.service.deleteCompany(company.id!).subscribe((success) => {
+      if (success) {
+        this.companies = this.companies.filter(c => c.id !== company.id);
+      } else {
+        console.error('Erro ao deletar a empresa');
       }
     });
   }

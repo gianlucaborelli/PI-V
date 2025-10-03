@@ -8,8 +8,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CompanyRegistrationComponent } from '../company-registration/company-registration.component';
 import { ModuleDetailComponent } from '../../../modules/module-detail/module-detail.component';
 import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
-import { TemplateLiteral } from '@angular/compiler';
-
 
 @Component({
   selector: 'app-company-view',
@@ -25,12 +23,11 @@ export class CompanyViewComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['id', 'name', 'description', 'type'];
+  displayedColumns: string[] = ['name', 'description', 'type'];
 
   company: CompanyModel = {
     id: ``,
-    name: '',
-    tags: []
+    name: ''
   }
 
   modules: ModuleModel[] = [];

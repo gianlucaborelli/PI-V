@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CompanyModel } from '../models/company.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -29,5 +29,13 @@ export class CompanyService {
   updateCompany(company: CompanyModel): Observable<CompanyModel> {
     let result = this.http.put<CompanyModel>(this.API_URL, company);
     return result
+  }
+
+  deleteCompany(company: string): Observable<boolean> {
+    return this.http.delete<void>(`${this.API_URL}/${company}`, { observe: 'response' })
+      .pipe(
+        map(response => response.status === 200),
+        catchError(() => of(false))
+      );
   }
 }
