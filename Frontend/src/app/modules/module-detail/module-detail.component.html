@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>Registro de Módulos</h2>
+<h2 mat-dialog-title>
+  {{ moduleState().id ? 'Atualizar módulo' : 'Registrar módulo' }}
+</h2>
 <mat-dialog-content>
   <div
     style="justify-content: space-between; display: flex; margin-top: 20px; margin-bottom: 10px"
@@ -19,15 +21,25 @@
     </button>
   </div>
 
-  @for(location of module?.locations; track location) {
-  <app-location-detail
-    [location]="location"
-    (locationChange)="updateLocation($index, $event)"
-  >
-  </app-location-detail>
+  @if (locations().length > 0) {
+    <h2 mat-dialog-title style="margin-top: -25px; text-align: center">
+      Locais
+      <mat-divider></mat-divider>
+    </h2>
+    @for(location of locations(); track location) {
+      <app-location-detail
+        [location]="location"
+        (locationChange)="updateLocation($index, $event)">
+      </app-location-detail>
+    }
+  } @else {
+    <p style="text-align: center; margin-top: 20px">
+      Nenhum local adicionado.
+    </p>
   }
+
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button (click)="registerModule()">Registrar</button>
+  <button mat-button (click)="saveModule()">{{ moduleState().id ? 'Atualizar' : 'Registrar' }}</button>
 </mat-dialog-actions>

@@ -1,5 +1,4 @@
-<h2 mat-dialog-title>Lista de Locais</h2>
-<mat-card appearance="outlined" style="margin-bottom: 10px">
+<mat-card appearance="outlined" style="margin-bottom: 10px; background-color: #f7f5ff;">
   <mat-card-content
     style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start"
   >
@@ -17,7 +16,7 @@
         <input matInput [(ngModel)]="location.description" />
       </mat-form-field>
     </div>
- <!-- Iterando sobre os riskLimits --> 
+ <!-- Iterando sobre os riskLimits -->
     <ng-container *ngFor="let risk of location.riskLimits; let i = index">
       <div
         style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px"

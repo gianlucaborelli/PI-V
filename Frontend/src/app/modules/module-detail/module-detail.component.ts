@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input, signal } from '@angular/core';
+import { Component, computed, effect, inject, Input, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -20,42 +20,34 @@ import { LocationDetailComponent } from "../components/location-detail/location-
   styleUrls: ['./module-detail.component.css']
 })
 export class ModuleDetailComponent {
-  readonly dialogRef = inject(MatDialogRef<ModuleDetailComponent>);
-  @Input() companyId: string | undefined;
+  private readonly dialogRef = inject(MatDialogRef<ModuleDetailComponent>);
+  private readonly moduleService = inject(ModuleService);
+
+  @Input() companyId?: string;
+
   @Input() set module(value: ModuleModel | undefined) {
-    if (value) {
-      this._module.set(value);
-    }
+    if (value) this._module.set(value);
   }
 
-  _module = signal<ModuleModel>({
+  private _module = signal<ModuleModel>({
     id: '',
     name: '',
     description: '',
     locations: []
   });
 
-  form = new FormGroup({
+  readonly moduleState = computed(() => this._module());
+
+  readonly locations = computed(() => this._module().locations ?? []);
+
+  readonly form = new FormGroup({
     name: new FormControl(''),
     description: new FormControl('')
   });
 
-  get module() {
-    return this._module;
-  }
-
-  constructor(
-    private moduleService: ModuleService,
-  ) {
+  constructor() {
     this.dialogRef.disableClose = true;
-    this.dialogRef.updateSize("60%");
-
-    effect(() => {
-      const m = this.module;
-      if (m) {
-        this.form.patchValue(m, { emitEvent: false });
-      }
-    });
+    this.dialogRef.updateSize('60%');
 
     this.form.valueChanges.subscribe(value => {
       this._module.update(m => ({
@@ -63,6 +55,11 @@ export class ModuleDetailComponent {
         name: value.name ?? '',
         description: value.description ?? ''
       }));
+    });
+
+    effect(() => {
+      const m = this._module();
+      this.form.patchValue(m, { emitEvent: false });
     });
   }
 
@@ -75,11 +72,7 @@ export class ModuleDetailComponent {
           type: '',
           name: '',
           description: '',
-          riskLimits: [{
-            riskId: "",
-            type: ""
-          }],
-
+          riskLimits: [{ riskId: '', type: '' }]
         } as LocationModel
       ]
     }));
@@ -93,15 +86,19 @@ export class ModuleDetailComponent {
     });
   }
 
-  registerModule() {
-    console.log("Registering module:", this._module);
-    this.moduleService.insertModule(this.companyId!, this._module).subscribe({
-      next: (response) => {
-        console.log("Module registered successfully:", response);
+  saveModule() {
+    const moduleValue = this._module();
+    const request$ = moduleValue.id
+      ? this.moduleService.updateModule(this.companyId!, moduleValue)
+      : this.moduleService.insertModule(this.companyId!, moduleValue);
+
+    request$.subscribe({
+      next: response => {
+        console.log('Module saved successfully:', response);
         this.dialogRef.close(response);
       },
-      error: (error) => {
-        console.error("Error registering module:", error);
+      error: err => {
+        console.error('Error saving module:', err);
         this.dialogRef.close(null);
       }
     });

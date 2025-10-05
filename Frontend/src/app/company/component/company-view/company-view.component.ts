@@ -9,6 +9,7 @@ import { CompanyRegistrationComponent } from '../company-registration/company-re
 import { ModuleDetailComponent } from '../../../modules/module-detail/module-detail.component';
 import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
 import { CommonModule } from '@angular/common';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-company-view',
@@ -20,11 +21,12 @@ import { CommonModule } from '@angular/common';
 export class CompanyViewComponent implements OnInit {
   constructor(private companyService: CompanyService,
     private router: ActivatedRoute,
+    private snackbarService: SnackBarService,
     private moduleService: ModuleService) { }
 
   readonly dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['name', 'description'];
+  displayedColumns: string[] = ['name', 'description','risks'];
 
   company: CompanyModel = {
     id: ``,
@@ -44,7 +46,10 @@ export class CompanyViewComponent implements OnInit {
     });
     this.moduleService.getAllModules(companyId).subscribe((data) => {
       this.modules = data;
+      console.log(data);
     });
+
+
   }
 
   openEditCompanyDialog() {
@@ -72,21 +77,35 @@ export class CompanyViewComponent implements OnInit {
   }
 
   refreshModuleToken(module: any): void {
-    // lógica para renovar o token
-    console.log("Atualizar token para:", module.name);
+    this.moduleService.regenerateModuleToken(this.company.id!, module.id).subscribe({
+      next: success => {
+        if (success) {
+          this.snackbarService.open("Token atualizado com sucesso.");
+          this.updateDataSource();
+        } else {
+          this.snackbarService.open("Falha ao regenerar token.");
+        }
+      },
+      error: err => this.snackbarService.open("Erro na requisição:", err)
+    });
   }
 
   deleteModule(module: any): void {
     const confirmed = window.confirm(`Tem certeza que deseja excluir o módulo "${module.name}"?`);
     if (confirmed) {
-      // Usuário confirmou → chama o serviço de delete
-      console.log('Excluindo módulo:', module);
+      this.moduleService.deleteModule(this.company.id!, module.id).subscribe({
+        next: () => {
+          this.snackbarService.open("Módulo excluído com sucesso!");
+          this.updateDataSource();
+        },
+        error: err => {
+          this.snackbarService.open("Erro ao excluir módulo:", err);
+        }
+      });
     }
   }
 
   updateModule(module: any): void {
-    console.log('Excluindo módulo:', module);
-    // lógica para atualizar o módulo
     const dialogConfig = new MatDialogConfig();
     dialogConfig.width = '80vw';
     dialogConfig.maxWidth = '90vw';
