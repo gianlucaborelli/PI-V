@@ -1,0 +1,10 @@
+.dashboard {
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.titulo {
+  font-size: 2rem;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}

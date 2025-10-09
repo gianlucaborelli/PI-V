@@ -1,0 +1,65 @@
+<h2 class="titulo">Painel de Monitoramento Ambiental</h2>
+
+<div style="display: flex; justify-content: space-around">
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha uma Empresa</mat-label>
+    <mat-select
+      [(value)]="companySelected"
+      (selectionChange)="onCompanySelected($event)"
+    >
+      <mat-option *ngFor="let item of companies" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha um Módulo</mat-label>
+    <mat-select
+      [(value)]="modulesSelected"
+      (selectionChange)="onModuleSelected($event)"
+    >
+      <mat-option *ngFor="let item of modules" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha uma data</mat-label>
+    <input
+      matInput
+      [matDatepicker]="datepicker"
+      (dateChange)="addEvent($event)"
+    />
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="datepicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #datepicker> </mat-datepicker>
+  </mat-form-field>
+
+  <button
+    mat-fab
+    aria-label="Example icon button with a delete icon"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>download</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Relatório em .csv</button>
+    <button mat-menu-item>Relatório em .xlsx</button>
+  </mat-menu>
+</div>
+
+<div style="height: 60px"></div>
+@if (dashboardData.locationsSummary?.length! > 0) { @for (locationSummary of
+dashboardData.locationsSummary; track locationSummary.name) {
+  <app-summary-tile
+    [locationSummary]="locationSummary"
+  ></app-summary-tile>
+} }@else {
+<div style="display: flex; justify-content: center">
+  <p>Selecione a Empresa e qual Módulo você quer visualizar</p>
+</div>
+}

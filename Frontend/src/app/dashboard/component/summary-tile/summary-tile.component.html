@@ -1,0 +1,62 @@
+<mat-card class="container">
+  <mat-card-header class="header">
+    <mat-card-title>{{ locationSummary?.name }}</mat-card-title>
+    <mat-card-subtitle>{{ locationSummary?.description }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <div class="graphic">
+    <ngx-charts-line-chart
+      [legend]="legend"
+      [legendPosition]="legendPosition"
+      [scheme]="colorScheme"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisTickFormatting]="formatXAxisLabel"
+      [yAxisTicks]="yAxisTicks"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="locationSummary?.series | chartData"
+    >
+    </ngx-charts-line-chart>
+  </div>
+
+  <div class="ibutg-values">
+    <div class="cart-text">
+      <span>IBUTG: </span>
+      <p>{{ locationSummary?.ibutgEstimation | number : "1.2-2" }} °C</p>
+    </div>
+
+    <div class="cart-text">
+      <span>Indice Metabolico: </span>
+      <p>sem valor ainda</p>
+    </div>
+  </div>
+
+  <mat-card-content class="resume-values">
+    <div class="cart-text">
+      <span>Temperatura Minima:</span>
+      <p>{{ locationSummary?.minTemperature | number : "1.2-2" }} °C</p>
+    </div>
+
+    <div class="cart-text">
+      <span>Temperatura Máxima:</span>
+      <p>{{ locationSummary?.maxTemperature | number : "1.2-2" }} °C</p>
+    </div>
+
+    <div class="cart-text">
+      <span>Temperatura média:</span>
+      <p>{{ locationSummary?.temperatureAverage | number : "1.2-2" }} °C</p>
+    </div>
+
+    <div class="cart-text">
+      <span>Umidade média:</span>
+      <p>{{ locationSummary?.humidityAverage | number : "1.2-2" }} %</p>
+    </div>
+  </mat-card-content>
+
+  <mat-card-footer class="warning">
+    <mat-icon class="warning-icon">warning</mat-icon>
+  </mat-card-footer>
+</mat-card>

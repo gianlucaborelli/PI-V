@@ -1,0 +1,94 @@
+ngx-charts-line-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cart-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cart-text span {
+  font-size: 18px;
+  font-weight: 400;
+  color: #555;
+}
+
+.cart-text p {
+  font-size: 20px;
+  font-weight: 500;
+  color: #4f4f4f;
+  margin: 0;
+  line-height: 1;
+}
+
+.graphic {
+  grid-area: graphic;
+  padding-top: 40px;
+  width: 100%;
+  height: 180px;
+}
+
+.header {
+  grid-area: header;
+  margin: -50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-title{
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+.header mat-card-title,
+.header mat-card-subtitle {
+  width: 100%;
+  text-align: center;
+  color: #4f4f4f;
+}
+
+.ibutg-values {
+  grid-area: ibutg-values;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.resume-values {
+  grid-area: resume-values;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-card {
+  overflow: hidden;
+}
+
+.warning {
+  grid-area: warning;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8630045;
+  width: 100%;
+  height: 35px;
+  color: rgb(255, 0, 0);
+  object-fit: contain;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 30% 20% 30% 20%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "graphic    header              header            header"
+    "graphic    ibutg-values        ibutg-values      ibutg-values"
+    "graphic    resume-values       resume-values     resume-values"
+    "warning    warning             warning           warning";
+}

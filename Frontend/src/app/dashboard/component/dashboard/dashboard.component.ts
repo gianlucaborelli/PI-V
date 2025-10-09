@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { DashboardService } from '../service/dashboard.service';
-import { DashboardModel } from '../models/dashboard.model';
-import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { CompanyService } from '../../company/services/company.service';
-import { CompanyModel } from '../../company/models/company.model';
-import { ModuleModel } from '../../modules/models/module.model';
-import { ModuleService } from '../../modules/services/module.service';
-import { MATERIAL_MODULES } from '../../shared/imports/material.imports';
+import { DashboardService } from '../../service/dashboard.service';
+import { DashboardModel } from '../../models/dashboard.model';
+import { CompanyService } from '../../../company/services/company.service';
+import { CompanyModel } from '../../../company/models/company.model';
+import { ModuleModel } from '../../../modules/models/module.model';
+import { ModuleService } from '../../../modules/services/module.service';
+import { MATERIAL_MODULES } from '../../../shared/imports/material.imports';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
 import localePt from '@angular/common/locales/pt';
@@ -17,11 +16,10 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS
 } from '@angular/material-moment-adapter';
-import { MY_FORMATS } from '../../shared/constants/MY_FORMATS ';
+import { MY_FORMATS } from '../../../shared/constants/MY_FORMATS ';
 import * as _moment from 'moment';
 import 'moment/locale/pt-br';
-import { LocationSummaryModel } from '../models/sensors.model';
-import { ChartDataPipe } from "../pipes/chartDataPipe";
+import { SummaryTileComponent } from '../summary-tile/summary-tile.component';
 
 registerLocaleData(localePt);
 const moment = _moment;
@@ -32,10 +30,9 @@ moment.locale('pt-br');
   standalone: true,
   imports: [
     ...MATERIAL_MODULES,
+    SummaryTileComponent,
     CommonModule,
-    NgxChartsModule,
-    ChartDataPipe
-],
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   providers: [
@@ -57,25 +54,6 @@ export class DashboardComponent implements OnInit {
   modulesSelected!: string;
 
   dateSelected!: Date | null;
-
-  // chart options
-  view: [number, number] = [880, 400];
-  legend: boolean = true;
-  showLabels: boolean = true;
-  animations: boolean = true;
-  xAxis: boolean = true;
-  yAxis: boolean = true;
-  showYAxisLabel: boolean = true;
-  showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Horário';
-  yAxisLabel: string = 'C';
-  timeline: boolean = true;
-  colorScheme: Color = {
-    name: 'customScheme',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
-  };
 
   constructor(private dashboardService: DashboardService, private companyService: CompanyService, private moduleService: ModuleService) { }
 
